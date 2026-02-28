@@ -9,6 +9,7 @@
 ```bash
 # 安装单个技能
 npx skills add canxing/skills --skill cve-vulnerability-analysis -y
+| [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
 
 # 安装多个技能
 npx skills add canxing/skills --skill skill-a --skill skill-b -y
@@ -22,6 +23,9 @@ npx skills list
 | 技能名称 | 描述 | 适用场景 |
 |---------|------|---------|
 | [cve-vulnerability-analysis](./cve-vulnerability-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
+| [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
+| [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
+| [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
 
 ## 开发指南
 
@@ -160,12 +164,14 @@ skill-name/
 ### OpenClaw
 ```bash
 npx skills add canxing/skills --skill cve-vulnerability-analysis -y
+| [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
 ```
 
 ### Claude Code / Codex / Cursor
 ```bash
 # 这些 Agent 也支持 skills.sh 标准
 npx skills add canxing/skills --skill cve-vulnerability-analysis -y
+| [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
 ```
 
 ## 注意事项
