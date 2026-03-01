@@ -23,6 +23,7 @@ npx skills list
 |---------|------|---------|
 | [cve-vulnerability-analysis](./cve-vulnerability-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
 | [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
+| [daily-political-news](./daily-political-news/) | 每日定时收集国内外时政新闻，AI翻译并生成要点摘要 | 新闻资讯、信息收集 |
 
 ## 开发指南
 

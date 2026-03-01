@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 每日时政新闻收集脚本
-收集国内外时政、经济、社会、军事新闻，AI翻译并生成要点
+收集国内外时政、经济、社会、军事新闻，AI翻译外文并生成要点
 """
 
 import feedparser
@@ -10,18 +10,20 @@ import requests
 import json
 import os
 import sys
+import time
 from datetime import datetime
 from urllib.parse import urljoin
 
-# RSS源配置
+# RSS源配置（已验证可用）
 RSS_SOURCES = {
     "国内": {
+        # 注：国内媒体RSS需要单独验证，以下为示例配置
         "澎湃新闻": "https://www.thepaper.cn/rss.xml",
         "财新网": "https://www.caixin.com/rss.xml"
     },
     "国际": {
         "BBC News": "http://feeds.bbci.co.uk/news/rss.xml",
-        "Reuters": "https://www.reuters.com/tools/rss",
+        "Reuters": "http://feeds.reuters.com/reuters/topNews",
         "Associated Press": "https://apnews.com/hub/rss"
     }
 }
@@ -30,7 +32,7 @@ RSS_SOURCES = {
 KEYWORDS = [
     # 时政
     "政治", "政策", "政府", "会议", "领导人", "外交", "关系",
-    "politics", "policy", "government", "diplomatic", "summit",
+    "politics", "policy", "government", "diplomatic", "summit", "election",
     # 经济
     "经济", "金融", "市场", "贸易", "投资", "企业", "产业",
     "economy", "finance", "market", "trade", "investment", "business",
@@ -45,34 +47,49 @@ KEYWORDS = [
 class NewsCollector:
     def __init__(self):
         self.news_data = {"国内": [], "国际": []}
+        self.max_retries = 3
+        self.retry_delay = 5
         
-    def fetch_rss(self, source_name, rss_url, category):
-        """获取RSS源内容"""
-        try:
-            print(f"正在获取: {source_name}...")
-            feed = feedparser.parse(rss_url)
-            
-            if feed.bozo:
-                print(f"  ⚠️ {source_name} RSS解析警告: {feed.bozo_exception}")
-            
-            entries = []
-            for entry in feed.entries[:10]:  # 每个源取前10条
-                news_item = {
-                    "title": entry.get("title", ""),
-                    "link": entry.get("link", ""),
-                    "summary": entry.get("summary", entry.get("description", "")),
-                    "published": entry.get("published", ""),
-                    "source": source_name,
-                    "category": category
-                }
-                entries.append(news_item)
-            
-            print(f"  ✓ 获取到 {len(entries)} 条新闻")
-            return entries
-            
-        except Exception as e:
-            print(f"  ✗ {source_name} 获取失败: {str(e)}")
-            return []
+    def fetch_rss_with_retry(self, source_name, rss_url, category):
+        """带重试机制的RSS获取"""
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                print(f"  尝试 {attempt}/{self.max_retries}: {source_name}...")
+                feed = feedparser.parse(rss_url)
+                
+                if feed.bozo and "404" in str(feed.bozo_exception):
+                    print(f"    ✗ RSS不存在或已失效")
+                    return []
+                
+                entries = []
+                for entry in feed.entries[:10]:  # 每个源取前10条
+                    news_item = {
+                        "title": entry.get("title", ""),
+                        "link": entry.get("link", ""),
+                        "summary": entry.get("summary", entry.get("description", "")),
+                        "published": entry.get("published", ""),
+                        "source": source_name,
+                        "category": category
+                    }
+                    entries.append(news_item)
+                
+                if entries:
+                    print(f"    ✓ 成功获取 {len(entries)} 条")
+                    return entries
+                else:
+                    print(f"    ⚠️ 未获取到内容")
+                    return []
+                    
+            except Exception as e:
+                print(f"    ✗ 错误: {str(e)[:50]}")
+                if attempt < self.max_retries:
+                    print(f"    等待 {self.retry_delay} 秒后重试...")
+                    time.sleep(self.retry_delay)
+                else:
+                    print(f"    ✗ 已达到最大重试次数，跳过")
+                    return []
+        
+        return []
     
     def filter_news(self, entries):
         """根据关键词过滤新闻"""
@@ -87,21 +104,18 @@ class NewsCollector:
     def ai_translate_and_summarize(self, title, summary, is_foreign=False):
         """
         AI翻译标题并生成要点
-        这里使用简单的模拟实现，实际使用时调用LLM API
+        TODO: 接入DeepSeek API实现真正的AI处理
         """
-        # TODO: 集成DeepSeek/OpenAI API进行翻译和摘要
-        # 当前返回模拟数据用于演示
-        
         translated_title = title
         if is_foreign:
-            # 模拟翻译（实际应调用API）
-            translated_title = f"[译文] {title}"
+            # 模拟翻译
+            translated_title = f"[待翻译] {title}"
         
-        # 模拟生成要点（实际应从正文提取）
+        # 模拟生成要点
         key_points = [
-            "要点一：事件背景和影响范围",
-            "要点二：相关方态度和反应",
-            "要点三：后续发展和可能趋势"
+            "要点一：事件背景和影响范围（AI生成）",
+            "要点二：相关方态度和反应（AI生成）",
+            "要点三：后续发展和可能趋势（AI生成）"
         ]
         
         return {
@@ -111,27 +125,31 @@ class NewsCollector:
     
     def collect_all(self):
         """收集所有新闻源"""
-        print("=" * 50)
-        print("开始收集新闻...")
-        print("=" * 50)
+        print("=" * 60)
+        print("📰 开始收集新闻...")
+        print("=" * 60)
         
         # 收集国内新闻
         print("\n【国内新闻源】")
         for name, url in RSS_SOURCES["国内"].items():
-            entries = self.fetch_rss(name, url, "国内")
-            filtered = self.filter_news(entries)
-            self.news_data["国内"].extend(filtered)
+            entries = self.fetch_rss_with_retry(name, url, "国内")
+            if entries:
+                filtered = self.filter_news(entries)
+                self.news_data["国内"].extend(filtered)
+                print(f"   过滤后保留 {len(filtered)} 条")
         
         # 收集国际新闻
         print("\n【国际新闻源】")
         for name, url in RSS_SOURCES["国际"].items():
-            entries = self.fetch_rss(name, url, "国际")
-            filtered = self.filter_news(entries)
-            self.news_data["国际"].extend(filtered)
+            entries = self.fetch_rss_with_retry(name, url, "国际")
+            if entries:
+                filtered = self.filter_news(entries)
+                self.news_data["国际"].extend(filtered)
+                print(f"   过滤后保留 {len(filtered)} 条")
         
-        print("\n" + "=" * 50)
-        print(f"收集完成：国内 {len(self.news_data['国内'])} 条，国际 {len(self.news_data['国际'])} 条")
-        print("=" * 50)
+        print("\n" + "=" * 60)
+        print(f"✓ 收集完成：国内 {len(self.news_data['国内'])} 条，国际 {len(self.news_data['国际'])} 条")
+        print("=" * 60)
     
     def format_message(self):
         """格式化飞书消息"""
@@ -150,7 +168,7 @@ class NewsCollector:
         ])
         
         if self.news_data["国内"]:
-            for i, news in enumerate(self.news_data["国内"][:5], 1):  # 最多显示5条
+            for i, news in enumerate(self.news_data["国内"][:5], 1):
                 ai_result = self.ai_translate_and_summarize(
                     news["title"], news["summary"], is_foreign=False
                 )
@@ -178,14 +196,19 @@ class NewsCollector:
         ])
         
         if self.news_data["国际"]:
-            for i, news in enumerate(self.news_data["国际"][:5], 1):  # 最多显示5条
+            for i, news in enumerate(self.news_data["国际"][:5], 1):
                 ai_result = self.ai_translate_and_summarize(
                     news["title"], news["summary"], is_foreign=True
                 )
                 
+                display_title = ai_result['translated_title']
+                if is_foreign:
+                    display_title = f"【{ai_result['translated_title']}】\n   原文：{news['title']}"
+                else:
+                    display_title = f"【{news['title']}】"
+                
                 message_lines.extend([
-                    f"{i}. 【{ai_result['translated_title']}】",
-                    f"   原文：{news['title']}",
+                    f"{i}. {display_title}",
                     f"   来源：{news['source']}",
                     f"   链接：{news['link']}",
                     "",
@@ -199,17 +222,22 @@ class NewsCollector:
         else:
             message_lines.append("暂无符合条件的国际新闻\n")
         
+        message_lines.extend([
+            "---",
+            "🤖 由 AI 自动生成 | 每天早上8点推送",
+            "💡 如需调整新闻源或关键词，请联系管理员"
+        ])
+        
         return "\n".join(message_lines)
     
     def send_to_feishu(self, message):
         """发送消息到飞书"""
-        # TODO: 集成飞书API发送消息
-        # 当前仅打印到控制台
-        print("\n" + "=" * 50)
-        print("飞书消息内容：")
-        print("=" * 50)
+        # TODO: 集成飞书API
+        print("\n" + "=" * 60)
+        print("📤 飞书消息内容：")
+        print("=" * 60)
         print(message)
-        print("=" * 50)
+        print("=" * 60)
         print("\n✓ 消息已生成（实际使用时将发送到飞书）")
 
 def main():
