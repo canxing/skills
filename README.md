@@ -21,7 +21,7 @@ npx skills list
 
 | 技能名称 | 描述 | 适用场景 |
 |---------|------|---------|
-| [cve-vulnerability-analysis](./cve-vulnerability-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
+| [supermap-cve-analysis](./supermap-cve-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
 | [daily-political-news](./daily-political-news/) | 每日定时收集国内外时政新闻，AI翻译并生成要点摘要 | 新闻资讯、信息收集 |
 | [supermap-search](./supermap-search/) | 统一搜索 Supermap wiki、Jira 和 YouTrack，整合展示结果 | 信息检索、知识查询 |
 | [supermap-jira-search](./supermap-jira-search/) | 搜索 Supermap Jira 系统中的 issues、bug 报告或任务 | 问题追踪、Bug 查询 |
