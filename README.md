@@ -7,8 +7,16 @@
 ### 安装技能
 
 ```bash
-# 安装单个技能
-npx skills add canxing/skills --skill cve-vulnerability-analysis -y
+# 安装单个技能（普通技能使用目录名）
+npx skills add canxing/skills --skill daily-political-news -y
+
+# 安装 Supermap 系列技能（使用 supermap: 前缀）
+npx skills add canxing/skills --skill supermap:search -y
+npx skills add canxing/skills --skill supermap:wiki-search -y
+npx skills add canxing/skills --skill supermap:jira-search -y
+npx skills add canxing/skills --skill supermap:youtrack-search -y
+npx skills add canxing/skills --skill supermap:youtrack-work-report -y
+npx skills add canxing/skills --skill supermap:cve-analysis -y
 
 # 安装多个技能
 npx skills add canxing/skills --skill skill-a --skill skill-b -y
@@ -166,15 +174,26 @@ skill-name/
 
 ### OpenClaw
 ```bash
-npx skills add canxing/skills --skill cve-vulnerability-analysis -y
-npx skills add canxing/skills --skill youtrack-work-summary -y
+# 普通技能
+npx skills add canxing/skills --skill daily-political-news -y
+
+# Supermap 系列技能（使用 supermap: 前缀）
+npx skills add canxing/skills --skill supermap:search -y
+npx skills add canxing/skills --skill supermap:wiki-search -y
+npx skills add canxing/skills --skill supermap:wiki-read -y
+npx skills add canxing/skills --skill supermap:jira-search -y
+npx skills add canxing/skills --skill supermap:youtrack-search -y
+npx skills add canxing/skills --skill supermap:youtrack-work-report -y
+npx skills add canxing/skills --skill supermap:cve-analysis -y
 ```
 
 ### Claude Code / Codex / Cursor
 ```bash
 # 这些 Agent 也支持 skills.sh 标准
-npx skills add canxing/skills --skill cve-vulnerability-analysis -y
-npx skills add canxing/skills --skill youtrack-work-summary -y
+# Supermap 系列技能（使用 supermap: 前缀）
+npx skills add canxing/skills --skill supermap:search -y
+npx skills add canxing/skills --skill supermap:wiki-search -y
+npx skills add canxing/skills --skill supermap:jira-search -y
 ```
 
 ## 注意事项
