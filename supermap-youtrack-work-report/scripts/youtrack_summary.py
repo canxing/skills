@@ -14,29 +14,20 @@ from collections import defaultdict
 
 
 class YouTrackSummary:
-    """YouTrack 工作总结生成器"""
-    
-    def __init__(self, token_file=None, base_url=None):
+    """YouTrack 工作报告生成器"""
+
+    def __init__(self, token=None, base_url=None):
         """初始化，读取配置"""
-        self.token_file = os.path.expanduser(
-            token_file or os.getenv('YOUTRACK_TOKEN_FILE', '~/.supermap/youtrack')
-        )
+        self.token = token or os.getenv('SUPERMAP_YOUTRACK_TOKEN')
+        if not self.token:
+            print("错误: 未设置 SUPERMAP_YOUTRACK_TOKEN 环境变量")
+            print("请设置环境变量: export SUPERMAP_YOUTRACK_TOKEN='your-token-here'")
+            sys.exit(1)
         self.base_url = base_url or os.getenv('YOUTRACK_URL', 'http://yt.ispeco.com:8099')
-        self.token = self._read_token()
         self.headers = {
             "Authorization": f"Bearer {self.token}",
             "Accept": "application/json"
         }
-    
-    def _read_token(self):
-        """从文件读取令牌"""
-        try:
-            with open(self.token_file, 'r') as f:
-                return f.read().strip()
-        except FileNotFoundError:
-            print(f"错误: 令牌文件不存在: {self.token_file}")
-            print("请创建令牌文件或设置 YOUTRACK_TOKEN_FILE 环境变量")
-            sys.exit(1)
     
     def parse_time_range(self, time_range_str):
         """解析时间范围字符串"""
@@ -323,18 +314,18 @@ class YouTrackSummary:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='YouTrack 工作总结生成器')
+    parser = argparse.ArgumentParser(description='YouTrack 工作报告生成器')
     parser.add_argument('time_range', help='时间范围，如 "2026-01"、"本月"、"上周"')
-    parser.add_argument('--token-file', help='令牌文件路径')
+    parser.add_argument('--token', help='API Token (默认从 SUPERMAP_YOUTRACK_TOKEN 环境变量获取)')
     parser.add_argument('--base-url', help='YouTrack API 地址')
-    
+
     args = parser.parse_args()
-    
+
     summary = YouTrackSummary(
-        token_file=args.token_file,
+        token=args.token,
         base_url=args.base_url
     )
-    
+
     report = summary.run(args.time_range)
     print(report)
 

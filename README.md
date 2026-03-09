@@ -28,7 +28,7 @@ npx skills list
 | [supermap-wiki-search](./supermap-wiki-search/) | 搜索 Supermap Confluence wiki，查找公司文档和技术资料 | 文档查询、知识库检索 |
 | [supermap-wiki-read](./supermap-wiki-read/) | 完整读取 wiki 页面内容，包括图片、评论和递归解析引用页面 | 文档阅读、内容获取 |
 | [supermap-youtrack-search](./supermap-youtrack-search/) | 搜索 Supermap YouTrack 系统中的 issues、任务或缺陷报告 | 任务查询、缺陷跟踪 |
-| [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
+| [supermap-youtrack-work-report](./supermap-youtrack-work-report/) | 从 YouTrack 获取工作时间记录并生成工作报告 | 工作汇报、时间统计 |
 
 ## 开发指南
 

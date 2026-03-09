@@ -1,9 +1,9 @@
 ---
-name: youtrack-work-summary
-description: 从YouTrack获取工作时间记录并生成工作总结报告。当用户需要总结某个时间段的工作内容时使用，例如"总结2026年1月的YouTrack工作"。支持自动分析父任务关系，按任务分组统计工作时间和天数。
+name: supermap:youtrack-work-report
+description: 从 YouTrack 获取工作时间记录并生成工作报告。当用户需要总结某个时间段的工作内容时使用，例如"总结2026年1月的YouTrack工作"。支持自动分析父任务关系，按任务分组统计工作时间和天数。
 ---
 
-# YouTrack 工作总结技能
+# Supermap YouTrack 工作报告技能
 
 ## 概述
 
@@ -65,13 +65,13 @@ GET /api/timetracking/workitems
 ## 配置要求
 
 ### 必需配置
-- **令牌文件**: `~/.supermap/youtrack` （包含 YouTrack API Token）
+- **API Token**: 设置环境变量 `SUPERMAP_YOUTRACK_TOKEN`
 - **API 地址**: `http://yt.ispeco.com:8099` （默认，可通过环境变量覆盖）
 
 ### 可选环境变量
 ```bash
+export SUPERMAP_YOUTRACK_TOKEN="your-token-here"
 export YOUTRACK_URL="http://yt.ispeco.com:8099"
-export YOUTRACK_TOKEN_FILE="~/.supermap/youtrack"
 ```
 
 ## 使用示例
