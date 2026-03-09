@@ -22,8 +22,13 @@ npx skills list
 | 技能名称 | 描述 | 适用场景 |
 |---------|------|---------|
 | [cve-vulnerability-analysis](./cve-vulnerability-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
-| [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
 | [daily-political-news](./daily-political-news/) | 每日定时收集国内外时政新闻，AI翻译并生成要点摘要 | 新闻资讯、信息收集 |
+| [supermap-search](./supermap-search/) | 统一搜索 Supermap wiki、Jira 和 YouTrack，整合展示结果 | 信息检索、知识查询 |
+| [supermap-jira-search](./supermap-jira-search/) | 搜索 Supermap Jira 系统中的 issues、bug 报告或任务 | 问题追踪、Bug 查询 |
+| [supermap-wiki-search](./supermap-wiki-search/) | 搜索 Supermap Confluence wiki，查找公司文档和技术资料 | 文档查询、知识库检索 |
+| [supermap-wiki-read](./supermap-wiki-read/) | 完整读取 wiki 页面内容，包括图片、评论和递归解析引用页面 | 文档阅读、内容获取 |
+| [supermap-youtrack-search](./supermap-youtrack-search/) | 搜索 Supermap YouTrack 系统中的 issues、任务或缺陷报告 | 任务查询、缺陷跟踪 |
+| [youtrack-work-summary](./youtrack-work-summary/) | 从 YouTrack 获取工作时间记录并生成工作总结报告 | 工作汇报、时间统计 |
 
 ## 开发指南
 
