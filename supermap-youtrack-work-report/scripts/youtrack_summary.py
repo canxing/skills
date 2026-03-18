@@ -12,6 +12,11 @@ import requests
 from datetime import datetime, timedelta
 from collections import defaultdict
 
+# Windows终端UTF-8编码支持
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 
 class YouTrackSummary:
     """YouTrack 工作报告生成器"""
@@ -183,23 +188,29 @@ class YouTrackSummary:
             print(f"获取任务 {task_id} 的父任务失败: {e}")
             return None
     
-    def analyze_parent_tasks(self, task_ids):
-        """分析多个任务的父任务，返回最常见的父任务"""
-        parent_counts = defaultdict(lambda: {'count': 0, 'info': None})
-        
+    def build_parent_task_map(self, task_ids):
+        """构建父任务映射关系
+
+        Returns:
+            task_parent_map: Dict[str, Optional[dict]] - 子任务ID -> 父任务信息
+            parent_children_map: Dict[str, List[str]] - 父任务ID -> 子任务ID列表
+            no_parent_tasks: List[str] - 无父任务的任务ID列表
+        """
+        task_parent_map = {}
+        parent_children_map = defaultdict(list)
+        no_parent_tasks = []
+
         for task_id in task_ids:
             parent = self.get_task_parent(task_id)
+            task_parent_map[task_id] = parent
+
             if parent:
                 parent_id = parent['id']
-                parent_counts[parent_id]['count'] += 1
-                parent_counts[parent_id]['info'] = parent
-        
-        if not parent_counts:
-            return None
-        
-        # 选择出现次数最多的父任务
-        most_common = max(parent_counts.items(), key=lambda x: x[1]['count'])
-        return most_common[1]['info']
+                parent_children_map[parent_id].append(task_id)
+            else:
+                no_parent_tasks.append(task_id)
+
+        return task_parent_map, parent_children_map, no_parent_tasks
     
     def group_by_task(self, work_items):
         """按任务分组工作项"""
@@ -237,14 +248,20 @@ class YouTrackSummary:
         """生成工作报告"""
         if not work_items:
             return "指定时间范围内无工作记录。"
-        
+
         # 按任务分组
         tasks = self.group_by_task(work_items)
-        
-        # 分析父任务
+
+        # 构建父任务映射
         task_ids = list(tasks.keys())
-        parent_task = self.analyze_parent_tasks(task_ids)
-        
+        task_parent_map, parent_children_map, no_parent_tasks = self.build_parent_task_map(task_ids)
+
+        # 收集所有父任务信息
+        parent_info_map = {}
+        for task_id, parent in task_parent_map.items():
+            if parent:
+                parent_info_map[parent['id']] = parent
+
         # 生成报告
         lines = []
         lines.append("# YouTrack 工作内容总结")
@@ -252,47 +269,127 @@ class YouTrackSummary:
         lines.append(f"**时间范围**: {time_range_str}")
         lines.append(f"**生成时间**: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
         lines.append("")
-        
-        # 父任务标题
-        if parent_task:
-            lines.append(f"**{parent_task['id']}: {parent_task['summary']}**:")
-        else:
-            lines.append("**工作任务汇总**:")
+        lines.append("---")
         lines.append("")
-        
-        # 子任务详情
-        total_hours = 0
+
+        # 总体统计数据
+        total_hours = sum(t['total_minutes'] for t in tasks.values()) / 60
         total_days = set()
-        
-        for task_id, task_data in sorted(tasks.items()):
-            hours = task_data['total_minutes'] / 60
-            total_hours += hours
-            days = sorted(task_data['dates'])
-            total_days.update(days)
-            
-            lines.append(f"  **{task_id}: {task_data['summary']}**")
-            lines.append(f"    - 工作时间: {hours:.1f}小时")
-            lines.append(f"    - 工作天数: {len(days)}天 ({', '.join(days)})")
-            lines.append(f"    - 工作项数: {len(task_data['work_items'])}个")
-            lines.append(f"    - 任务链接: {self.base_url}/issue/{task_id}")
-            
-            # 工作内容（取第一个非空的）
-            texts = [wi['text'] for wi in task_data['work_items'] if wi['text']]
-            if texts:
-                lines.append(f"    - 工作内容: {texts[0]}")
-            lines.append("")
-        
-        # 汇总
-        lines.append("## 📊 汇总信息")
+        for task_data in tasks.values():
+            total_days.update(task_data['dates'])
+
+        # 父任务工时分布（用于后续表格）
+        parent_hours = {}
+
+        # 1. 渲染每个父任务分组
+        for parent_id, child_task_ids in sorted(parent_children_map.items()):
+            parent_info = parent_info_map.get(parent_id, {'id': parent_id, 'summary': '未知父任务'})
+            parent_hours[parent_id] = self._render_parent_section(
+                lines, parent_info, child_task_ids, tasks
+            )
+
+        # 2. 渲染"其他任务"分组（无父任务的任务）
+        if no_parent_tasks:
+            other_hours = self._render_other_tasks_section(lines, no_parent_tasks, tasks)
+            parent_hours['其他任务'] = other_hours
+
+        # 汇总表格
+        lines.append("---")
         lines.append("")
-        if parent_task:
-            lines.append(f"- **父任务**: {parent_task['id']}: {parent_task['summary']}")
-        lines.append(f"- **子任务数**: {len(tasks)} 个")
-        lines.append(f"- **工作项数**: {len(work_items)} 个")
-        lines.append(f"- **总工作时间**: {total_hours:.1f} 小时")
-        lines.append(f"- **工作天数**: {len(total_days)} 天")
-        
+        lines.append("## 📊 总体汇总")
+        lines.append("")
+        lines.append("| 统计项 | 数值 |")
+        lines.append("|--------|------|")
+        lines.append(f"| 父任务数 | {len(parent_children_map)} 个 |")
+        lines.append(f"| 子任务数 | {len(tasks)} 个 |")
+        lines.append(f"| 工作项数 | {len(work_items)} 个 |")
+        lines.append(f"| 总工时 | {total_hours:.1f} 小时 |")
+        lines.append(f"| 工作天数 | {len(total_days)} 天 |")
+        lines.append("")
+
+        # 各父任务工时分布
+        if parent_hours:
+            lines.append("### 各父任务工时分布")
+            lines.append("")
+            lines.append("| 父任务 | 工时 | 占比 |")
+            lines.append("|--------|------|------|")
+            for parent_id, hours in sorted(parent_hours.items(), key=lambda x: x[1], reverse=True):
+                percentage = (hours / total_hours * 100) if total_hours > 0 else 0
+                display_name = parent_id if parent_id == '其他任务' else parent_id
+                lines.append(f"| {display_name} | {hours:.1f}h | {percentage:.0f}% |")
+            lines.append("")
+
         return '\n'.join(lines)
+
+    def _render_parent_section(self, lines, parent_info, child_task_ids, tasks):
+        """渲染单个父任务分组，返回该父任务的工时合计"""
+        parent_id = parent_info['id']
+        parent_summary = parent_info['summary']
+
+        # 计算该父任务下的工时和子任务
+        child_count = len(child_task_ids)
+        parent_total_minutes = 0
+
+        for task_id in child_task_ids:
+            if task_id in tasks:
+                parent_total_minutes += tasks[task_id]['total_minutes']
+
+        parent_total_hours = parent_total_minutes / 60
+
+        # 父任务标题
+        lines.append(f"## 📁 {parent_id}: {parent_summary}")
+        lines.append(f"**子任务数量**: {child_count} 个 | **工时合计**: {parent_total_hours:.1f} 小时")
+        lines.append("")
+
+        # 子任务详情
+        for task_id in sorted(child_task_ids):
+            if task_id in tasks:
+                self._render_task_detail(lines, task_id, tasks[task_id])
+
+        lines.append("---")
+        lines.append("")
+
+        return parent_total_hours
+
+    def _render_other_tasks_section(self, lines, no_parent_tasks, tasks):
+        """渲染"其他任务"分组（无父任务的任务），返回工时合计"""
+        other_total_minutes = 0
+
+        for task_id in no_parent_tasks:
+            if task_id in tasks:
+                other_total_minutes += tasks[task_id]['total_minutes']
+
+        other_total_hours = other_total_minutes / 60
+
+        lines.append("## 📁 其他任务（无父任务）")
+        lines.append(f"**子任务数量**: {len(no_parent_tasks)} 个 | **工时合计**: {other_total_hours:.1f} 小时")
+        lines.append("")
+
+        for task_id in sorted(no_parent_tasks):
+            if task_id in tasks:
+                self._render_task_detail(lines, task_id, tasks[task_id])
+
+        lines.append("---")
+        lines.append("")
+
+        return other_total_hours
+
+    def _render_task_detail(self, lines, task_id, task_data):
+        """渲染单个子任务详情"""
+        hours = task_data['total_minutes'] / 60
+        days = sorted(task_data['dates'])
+
+        lines.append(f"### {task_id}: {task_data['summary']}")
+        lines.append(f"- **工作时间**: {hours:.1f}小时")
+        lines.append(f"- **工作天数**: {len(days)}天 ({', '.join(days)})")
+        lines.append(f"- **工作项数**: {len(task_data['work_items'])}个")
+        lines.append(f"- **任务链接**: {self.base_url}/issue/{task_id}")
+
+        # 工作内容（取第一个非空的）
+        texts = [wi['text'] for wi in task_data['work_items'] if wi['text']]
+        if texts:
+            lines.append(f"- **工作内容**: {texts[0]}")
+        lines.append("")
     
     def run(self, time_range_str):
         """运行总结流程"""
