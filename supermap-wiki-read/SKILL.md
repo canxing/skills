@@ -43,10 +43,10 @@ allowed-tools: Bash
 
 ## 执行脚本
 
-使用 Bash 工具运行 Python 脚本：
+使用 Bash 工具运行 Node.js 脚本：
 
 ```bash
-python3 .claude/skills/supermap-wiki-read/scripts/read_wiki.py "<wiki URL 或 pageId>"
+node .claude/skills/supermap-wiki-read/scripts/read_wiki.js "<wiki URL 或 pageId>"
 ```
 
 可选参数：
@@ -154,6 +154,6 @@ $env:SUPERMAP_WIKI_TOKEN='your-token-here'
 - **API 端点**: `https://wiki.ispeco.com/rest/api/content`
 - **认证方式**: Bearer Token
 - **返回格式**: Markdown
-- **依赖**: Python 3 标准库（无第三方依赖）
+- **依赖**: Node.js 内置模块（https），无需安装额外依赖
 - **递归深度**: 默认最大 3 层，可配置
 - **跨平台**: 支持 Linux、macOS、Windows

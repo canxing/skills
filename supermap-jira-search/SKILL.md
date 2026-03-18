@@ -43,10 +43,10 @@ set SUPERMAP_JIRA_TOKEN=your-jira-token-here
 
 ## 执行方式
 
-Claude 应该使用 Bash 工具执行 Python 脚本：
+Claude 应该使用 Bash 工具执行 Node.js 脚本：
 
 ```bash
-python3 .claude/skills/supermap-jira-search/scripts/search_jira.py "<搜索词>"
+node .claude/skills/supermap-jira-search/scripts/search_jira.js "<搜索词>"
 ```
 
 脚本会：
@@ -74,4 +74,5 @@ python3 .claude/skills/supermap-jira-search/scripts/search_jira.py "<搜索词>"
 - **API 端点**: `https://jira.supermap.work/rest/quicksearch/1.0/productsearch/search`
 - **认证方式**: Bearer Token
 - **结果过滤**: 只返回 `id == "quick-search-issues"` 的结果
-- **依赖**: 仅使用 Python 标准库，无需安装额外依赖
+- **依赖**: Node.js 内置模块（https），无需安装额外依赖
+- **跨平台**: 支持 Windows、macOS、Linux

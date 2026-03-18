@@ -44,10 +44,10 @@ set SUPERMAP_YOUTRACK_TOKEN=your-youtrack-token-here
 
 ## 执行方式
 
-Claude 应该使用 Bash 工具执行 Python 脚本：
+Claude 应该使用 Bash 工具执行 Node.js 脚本：
 
 ```bash
-python3 .claude/skills/supermap-youtrack-search/scripts/search_youtrack.py "<搜索词>"
+node .claude/skills/supermap-youtrack-search/scripts/search_youtrack.js "<搜索词>"
 ```
 
 脚本会：
@@ -72,6 +72,7 @@ python3 .claude/skills/supermap-youtrack-search/scripts/search_youtrack.py "<搜
 ## 技术细节
 
 - **YouTrack 地址**: `http://yt.ispeco.com:8099`
-- **API 端点**: `POST /api/issuesGetter`
+- **API 端点**: `GET /api/issues`
 - **认证方式**: Bearer Token
-- **依赖**: 仅使用 Python 标准库，无需安装额外依赖
+- **依赖**: Node.js 内置模块（http），无需安装额外依赖
+- **跨平台**: 支持 Windows、macOS、Linux
