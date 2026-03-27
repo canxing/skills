@@ -76,7 +76,7 @@ disable-model-invocation: true     # true 表示不调用模型
 
 ```bash
 # 本地链接技能进行测试（OpenClaw）
-ln -s $(pwd)/skill-name ~/.openclaw/workspace/.agents/skills/skill-name
+ln -s $(pwd)/skills/skill-name ~/.openclaw/workspace/.agents/skills/skill-name
 
 # 从 GitHub 安装（推送后）
 npx skills add canxing/skills --skill skill-name -y
@@ -115,7 +115,7 @@ python3 scripts/collect_news_v6.py
 
 ## 技能开发流程
 
-1. **创建技能目录**：`mkdir new-skill && cd new-skill`
+1. **创建技能目录**：`mkdir skills/new-skill && cd skills/new-skill`
 2. **编写 SKILL.md**：包含 YAML 头部和使用说明
 3. **添加脚本**：使用 Python 标准库编写功能脚本
 4. **本地测试**：链接到 Agent 验证功能

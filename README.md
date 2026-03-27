@@ -29,14 +29,14 @@ npx skills list
 
 | 技能名称 | 描述 | 适用场景 |
 |---------|------|---------|
-| [supermap-cve-analysis](./supermap-cve-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
-| [daily-political-news](./daily-political-news/) | 每日定时收集国内外时政新闻，AI翻译并生成要点摘要 | 新闻资讯、信息收集 |
-| [supermap-search](./supermap-search/) | 统一搜索 Supermap wiki、Jira 和 YouTrack，整合展示结果 | 信息检索、知识查询 |
-| [supermap-jira-search](./supermap-jira-search/) | 搜索 Supermap Jira 系统中的 issues、bug 报告或任务 | 问题追踪、Bug 查询 |
-| [supermap-wiki-search](./supermap-wiki-search/) | 搜索 Supermap Confluence wiki，查找公司文档和技术资料 | 文档查询、知识库检索 |
-| [supermap-wiki-read](./supermap-wiki-read/) | 完整读取 wiki 页面内容，包括图片、评论和递归解析引用页面 | 文档阅读、内容获取 |
-| [supermap-youtrack-search](./supermap-youtrack-search/) | 搜索 Supermap YouTrack 系统中的 issues、任务或缺陷报告 | 任务查询、缺陷跟踪 |
-| [supermap-youtrack-work-report](./supermap-youtrack-work-report/) | 从 YouTrack 获取工作时间记录并生成工作报告 | 工作汇报、时间统计 |
+| [supermap-cve-analysis](./skills/supermap-cve-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
+| [daily-political-news](./skills/daily-political-news/) | 每日定时收集国内外时政新闻，AI翻译并生成要点摘要 | 新闻资讯、信息收集 |
+| [supermap-search](./skills/supermap-search/) | 统一搜索 Supermap wiki、Jira 和 YouTrack，整合展示结果 | 信息检索、知识查询 |
+| [supermap-jira-search](./skills/supermap-jira-search/) | 搜索 Supermap Jira 系统中的 issues、bug 报告或任务 | 问题追踪、Bug 查询 |
+| [supermap-wiki-search](./skills/supermap-wiki-search/) | 搜索 Supermap Confluence wiki，查找公司文档和技术资料 | 文档查询、知识库检索 |
+| [supermap-wiki-read](./skills/supermap-wiki-read/) | 完整读取 wiki 页面内容，包括图片、评论和递归解析引用页面 | 文档阅读、内容获取 |
+| [supermap-youtrack-search](./skills/supermap-youtrack-search/) | 搜索 Supermap YouTrack 系统中的 issues、任务或缺陷报告 | 任务查询、缺陷跟踪 |
+| [supermap-youtrack-work-report](./skills/supermap-youtrack-work-report/) | 从 YouTrack 获取工作时间记录并生成工作报告 | 工作汇报、时间统计 |
 
 ## 开发指南
 
@@ -45,8 +45,8 @@ npx skills list
 1. **创建技能目录**
    ```bash
    cd ~/code/skills
-   mkdir my-new-skill
-   cd my-new-skill
+   mkdir skills/my-new-skill
+   cd skills/my-new-skill
    ```
 
 2. **创建 SKILL.md**
@@ -76,7 +76,7 @@ npx skills list
 4. **本地测试**
    ```bash
    # 链接到 Agent 进行测试
-   ln -s $(pwd)/my-new-skill ~/.openclaw/workspace/.agents/skills/my-new-skill
+   ln -s $(pwd)/skills/my-new-skill ~/.openclaw/workspace/.agents/skills/my-new-skill
    
    # 验证安装
    npx skills list
@@ -85,7 +85,7 @@ npx skills list
 5. **提交到 Git**
    ```bash
    cd ~/code/skills
-   git add my-new-skill/
+   git add skills/my-new-skill/
    git commit -m "Add my-new-skill"
    git push
    ```
@@ -101,7 +101,7 @@ npx skills list
 ```bash
 # 1. 本地移除技能目录
 cd ~/code/skills
-rm -rf skill-name/
+rm -rf skills/skill-name/
 
 # 2. 提交变更
 git add -A
@@ -116,7 +116,7 @@ npx skills remove skill-name -y
 
 ```bash
 # 1. 修改技能文件
-cd ~/code/skills/skill-name
+cd ~/code/skills/skills/skill-name
 # 编辑 SKILL.md 或其他文件
 
 # 2. 本地测试
@@ -124,7 +124,7 @@ cd ~/code/skills/skill-name
 
 # 3. 提交更新
 cd ~/code/skills
-git add skill-name/
+git add skills/skill-name/
 git commit -m "Update skill-name: 描述变更内容"
 git push
 
