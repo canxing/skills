@@ -88,11 +88,19 @@ def main():
             sys.exit(0)
 
         # PostToolUse + Skill tool -> 记录该 session 已调用 skill
+        # (直接使用 Skill 工具时触发)
         if event_name == "PostToolUse":
             tool_name = input_data.get("tool_name", "")
             if tool_name == "Skill":
                 mark_session_used_skill(session_id)
                 sys.exit(0)
+
+        # InstructionsLoaded -> 记录该 session 已加载 skill
+        # (通过 slash command 加载 skill 时触发，如 /superpowers:brainstorm)
+        if event_name == "InstructionsLoaded":
+            # InstructionsLoaded 事件表示 skill/指令已加载
+            mark_session_used_skill(session_id)
+            sys.exit(0)
 
         # UserPromptSubmit -> 检查并注入提醒
         if event_name == "UserPromptSubmit":
