@@ -21,5 +21,6 @@
   "disablePostCompactHook": false,
   "disableElicitationHook": false,
   "disableElicitationResultHook": false,
-  "disableLogging": false
+  "disableLogging": false,
+  "disableSkillReminderHook": false
 }
