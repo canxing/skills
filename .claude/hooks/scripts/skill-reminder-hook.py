@@ -10,6 +10,7 @@ import json
 import time
 import msvcrt
 import os
+import traceback
 from pathlib import Path
 
 STATE_FILE = "skill-sessions.json"
@@ -32,7 +33,7 @@ def load_session_states():
                 try:
                     msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)  # 共享锁
                 except (IOError, OSError):
-                    pass
+                    print(f"Warning: file lock failed: {traceback.format_exc()}", file=sys.stderr)
                 return json.load(f)
         except (json.JSONDecodeError, IOError, OSError):
             time.sleep(0.01)
@@ -42,7 +43,7 @@ def load_session_states():
 def save_session_states(states):
     state_path = get_state_path()
     state_path.parent.mkdir(parents=True, exist_ok=True)
-    tmp_path = state_path.with_suffix('.tmp')
+    tmp_path = state_path.parent / f".{state_path.name}.tmp"
 
     try:
         # 先写临时文件
@@ -53,7 +54,7 @@ def save_session_states(states):
             try:
                 msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
             except (IOError, OSError):
-                pass  # 非 Windows 或锁失败则跳过
+                print(f"Warning: file lock failed: {traceback.format_exc()}", file=sys.stderr)
         # atomic rename
         tmp_path.replace(state_path)
     except Exception:
