@@ -46,6 +46,13 @@
             "timeout": 5000,
             "async": true,
             "statusMessage": "PostToolUse"
+          },
+          {
+            "type": "command",
+            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "SkillReminder"
           }
         ]
       }
@@ -69,6 +76,11 @@
           {
             "type": "command",
             "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
+            "timeout": 5000
+          },
+          {
+            "type": "command",
+            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py",
             "timeout": 5000
           }
         ]
@@ -149,6 +161,13 @@
             "timeout": 5000,
             "async": true,
             "statusMessage": "PostCompact"
+          },
+          {
+            "type": "command",
+            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "SkillReminder"
           }
         ]
       }
