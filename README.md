@@ -11,12 +11,17 @@
 npx skills add canxing/skills --skill daily-political-news -y
 
 # 安装 Supermap 系列技能（使用 supermap: 前缀）
-npx skills add canxing/skills --skill supermap:search -y
-npx skills add canxing/skills --skill supermap:wiki-search -y
+npx skills add canxing/skills --skill supermap:cdci_analysis -y
+npx skills add canxing/skills --skill supermap:cve-analysis -y
+npx skills add canxing/skills --skill supermap:jira-read -y
 npx skills add canxing/skills --skill supermap:jira-search -y
+npx skills add canxing/skills --skill supermap:search -y
+npx skills add canxing/skills --skill supermap:sonar_error_analysis -y
+npx skills add canxing/skills --skill supermap:wiki-read -y
+npx skills add canxing/skills --skill supermap:wiki-search -y
+npx skills add canxing/skills --skill supermap:wiki-write -y
 npx skills add canxing/skills --skill supermap:youtrack-search -y
 npx skills add canxing/skills --skill supermap:youtrack-work-report -y
-npx skills add canxing/skills --skill supermap:cve-analysis -y
 
 # 安装多个技能
 npx skills add canxing/skills --skill skill-a --skill skill-b -y
@@ -29,12 +34,17 @@ npx skills list
 
 | 技能名称 | 描述 | 适用场景 |
 |---------|------|---------|
-| [supermap-cve-analysis](./skills/supermap-cve-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
+| [bug-fixing](./skills/bug-fixing/) | 指导按照特定7步流程修复bug：分析→设计测试→确保UT通过→添加失败UT→修复代码→验证→最终通过 | Bug修复、代码调试 |
 | [daily-political-news](./skills/daily-political-news/) | 每日定时收集国内外时政新闻，AI翻译并生成要点摘要 | 新闻资讯、信息收集 |
-| [supermap-search](./skills/supermap-search/) | 统一搜索 Supermap wiki、Jira 和 YouTrack，整合展示结果 | 信息检索、知识查询 |
+| [supermap-cdci-analysis](./skills/supermap-cdci-analysis/) | 分析 TeamCity CI/CD 构建失败原因并提供解决方案 | CI/CD 故障排查、构建分析 |
+| [supermap-cve-analysis](./skills/supermap-cve-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
+| [supermap-jira-read](./skills/supermap-jira-read/) | 读取 Supermap Jira 问题的详情，包括描述、附件、评论等 | 问题详情查询 |
 | [supermap-jira-search](./skills/supermap-jira-search/) | 搜索 Supermap Jira 系统中的 issues、bug 报告或任务 | 问题追踪、Bug 查询 |
-| [supermap-wiki-search](./skills/supermap-wiki-search/) | 搜索 Supermap Confluence wiki，查找公司文档和技术资料 | 文档查询、知识库检索 |
+| [supermap-search](./skills/supermap-search/) | 统一搜索 Supermap wiki、Jira 和 YouTrack，整合展示结果 | 信息检索、知识查询 |
+| [supermap-sonar-error-analysis](./skills/supermap-sonar-error-analysis/) | 分析 SonarQube 质量门失败原因并提供改进建议 | 代码质量检查、质量门分析 |
 | [supermap-wiki-read](./skills/supermap-wiki-read/) | 完整读取 wiki 页面内容，包括图片、评论和递归解析引用页面 | 文档阅读、内容获取 |
+| [supermap-wiki-search](./skills/supermap-wiki-search/) | 搜索 Supermap Confluence wiki，查找公司文档和技术资料 | 文档查询、知识库检索 |
+| [supermap-wiki-writer](./skills/supermap-wiki-writer/) | 向 Supermap Wiki 写入内容，支持创建新页面或修改现有页面 | Wiki 内容编写、文档维护 |
 | [supermap-youtrack-search](./skills/supermap-youtrack-search/) | 搜索 Supermap YouTrack 系统中的 issues、任务或缺陷报告 | 任务查询、缺陷跟踪 |
 | [supermap-youtrack-work-report](./skills/supermap-youtrack-work-report/) | 从 YouTrack 获取工作时间记录并生成工作报告 | 工作汇报、时间统计 |
 
@@ -175,25 +185,41 @@ skill-name/
 ### OpenClaw
 ```bash
 # 普通技能
+npx skills add canxing/skills --skill bug-fixing -y
 npx skills add canxing/skills --skill daily-political-news -y
 
 # Supermap 系列技能（使用 supermap: 前缀）
-npx skills add canxing/skills --skill supermap:search -y
-npx skills add canxing/skills --skill supermap:wiki-search -y
-npx skills add canxing/skills --skill supermap:wiki-read -y
+npx skills add canxing/skills --skill supermap:cdci_analysis -y
+npx skills add canxing/skills --skill supermap:cve-analysis -y
+npx skills add canxing/skills --skill supermap:jira-read -y
 npx skills add canxing/skills --skill supermap:jira-search -y
+npx skills add canxing/skills --skill supermap:search -y
+npx skills add canxing/skills --skill supermap:sonar_error_analysis -y
+npx skills add canxing/skills --skill supermap:wiki-read -y
+npx skills add canxing/skills --skill supermap:wiki-search -y
+npx skills add canxing/skills --skill supermap:wiki-write -y
 npx skills add canxing/skills --skill supermap:youtrack-search -y
 npx skills add canxing/skills --skill supermap:youtrack-work-report -y
-npx skills add canxing/skills --skill supermap:cve-analysis -y
 ```
 
 ### Claude Code / Codex / Cursor
 ```bash
 # 这些 Agent 也支持 skills.sh 标准
+# 普通技能
+npx skills add canxing/skills --skill bug-fixing -y
+
 # Supermap 系列技能（使用 supermap: 前缀）
-npx skills add canxing/skills --skill supermap:search -y
-npx skills add canxing/skills --skill supermap:wiki-search -y
+npx skills add canxing/skills --skill supermap:cdci_analysis -y
+npx skills add canxing/skills --skill supermap:cve-analysis -y
+npx skills add canxing/skills --skill supermap:jira-read -y
 npx skills add canxing/skills --skill supermap:jira-search -y
+npx skills add canxing/skills --skill supermap:search -y
+npx skills add canxing/skills --skill supermap:sonar_error_analysis -y
+npx skills add canxing/skills --skill supermap:wiki-read -y
+npx skills add canxing/skills --skill supermap:wiki-search -y
+npx skills add canxing/skills --skill supermap:wiki-write -y
+npx skills add canxing/skills --skill supermap:youtrack-search -y
+npx skills add canxing/skills --skill supermap:youtrack-work-report -y
 ```
 
 ## 注意事项
