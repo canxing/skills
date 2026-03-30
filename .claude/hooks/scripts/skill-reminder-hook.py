@@ -7,6 +7,9 @@ Skill Reminder Hook
 
 import sys
 import json
+import time
+import msvcrt
+import os
 from pathlib import Path
 
 STATE_FILE = "skill-sessions.json"
@@ -21,23 +24,42 @@ def get_state_path():
 
 def load_session_states():
     state_path = get_state_path()
-    if state_path.exists():
+    if not state_path.exists():
+        return {}
+    for _ in range(10):  # 重试直到成功
         try:
             with open(state_path, "r", encoding="utf-8") as f:
+                try:
+                    msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)  # 共享锁
+                except (IOError, OSError):
+                    pass
                 return json.load(f)
-        except (json.JSONDecodeError, IOError):
-            return {}
+        except (json.JSONDecodeError, IOError, OSError):
+            time.sleep(0.01)
     return {}
 
 
 def save_session_states(states):
     state_path = get_state_path()
     state_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = state_path.with_suffix('.tmp')
+
     try:
-        with open(state_path, "w", encoding="utf-8") as f:
+        # 先写临时文件
+        with open(tmp_path, "w", encoding="utf-8") as f:
             json.dump(states, f, ensure_ascii=False, indent=2)
-    except IOError as e:
-        print(f"Failed to save session state: {e}", file=sys.stderr)
+            f.flush()
+            # Windows 文件锁
+            try:
+                msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
+            except (IOError, OSError):
+                pass  # 非 Windows 或锁失败则跳过
+        # atomic rename
+        tmp_path.replace(state_path)
+    except Exception:
+        if tmp_path.exists():
+            tmp_path.unlink()
+        raise
 
 
 def mark_session_used_skill(session_id):
