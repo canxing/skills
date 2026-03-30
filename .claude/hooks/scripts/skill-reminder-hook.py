@@ -1,0 +1,99 @@
+#!/usr/bin/env python
+"""
+Skill Reminder Hook
+====================
+当加载 skill 后，在用户每次提问时提醒按照 skill 流程进行。
+"""
+
+import sys
+import json
+from pathlib import Path
+
+STATE_FILE = "skill-sessions.json"
+REMINDER_TEXT = "***重要***: 请按照已加载的 skill 流程进行"
+
+
+def get_state_path():
+    script_dir = Path(__file__).parent
+    hooks_dir = script_dir.parent
+    return hooks_dir / "state" / STATE_FILE
+
+
+def load_session_states():
+    state_path = get_state_path()
+    if state_path.exists():
+        try:
+            with open(state_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            return {}
+    return {}
+
+
+def save_session_states(states):
+    state_path = get_state_path()
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with open(state_path, "w", encoding="utf-8") as f:
+            json.dump(states, f, ensure_ascii=False, indent=2)
+    except IOError as e:
+        print(f"Failed to save session state: {e}", file=sys.stderr)
+
+
+def mark_session_used_skill(session_id):
+    states = load_session_states()
+    states[session_id] = {"used_skill": True}
+    save_session_states(states)
+
+
+def has_session_used_skill(session_id):
+    states = load_session_states()
+    return states.get(session_id, {}).get("used_skill", False)
+
+
+def main():
+    try:
+        stdin_content = sys.stdin.read().strip()
+        if not stdin_content:
+            sys.exit(0)
+
+        input_data = json.loads(stdin_content)
+        event_name = input_data.get("hook_event_name", "")
+        session_id = input_data.get("session_id", "")
+
+        if not session_id:
+            sys.exit(0)
+
+        # PostToolUse + Skill tool -> 记录该 session 已调用 skill
+        if event_name == "PostToolUse":
+            tool_name = input_data.get("tool_name", "")
+            if tool_name == "Skill":
+                mark_session_used_skill(session_id)
+                sys.exit(0)
+
+        # UserPromptSubmit -> 检查并注入提醒
+        if event_name == "UserPromptSubmit":
+            if has_session_used_skill(session_id):
+                sys.stdout.write(REMINDER_TEXT)
+                sys.stdout.flush()
+            sys.exit(0)
+
+        # PostCompact -> 检查并注入提醒
+        if event_name == "PostCompact":
+            if has_session_used_skill(session_id):
+                sys.stdout.write(REMINDER_TEXT)
+                sys.stdout.flush()
+            sys.exit(0)
+
+        sys.exit(0)
+
+    except json.JSONDecodeError as e:
+        print(f"Error parsing JSON input: {e}", file=sys.stderr)
+        sys.exit(0)
+    except Exception as e:
+        print(f"Unexpected error: {e}", file=sys.stderr)
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
