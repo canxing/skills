@@ -171,10 +171,32 @@ def test_multiple_sessions_isolated():
         clear_state_file()
 
 
+def test_instructionsloaded_marks_session():
+    """InstructionsLoaded -> 记录 session 状态（slash command 加载 skill）"""
+    try:
+        clear_state_file()
+        session_id = "test-session-instructionsloaded"
+
+        event = {
+            "hook_event_name": "InstructionsLoaded",
+            "session_id": session_id
+        }
+
+        stdout, code = run_hook(event)
+        assert code == 0, "Hook should exit with 0"
+
+        states = read_state_file()
+        assert session_id in states, "Session should be marked via InstructionsLoaded"
+        assert states[session_id]["used_skill"]
+    finally:
+        clear_state_file()
+
+
 if __name__ == "__main__":
     test_posttooluse_skill_marks_session()
     test_userpromptsubmit_without_skill_no_reminder()
     test_userpromptsubmit_with_skill_injects_reminder()
     test_postcompact_with_skill_injects_reminder()
     test_multiple_sessions_isolated()
+    test_instructionsloaded_marks_session()
     print("All integration tests passed!")
