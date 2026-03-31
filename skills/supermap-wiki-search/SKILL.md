@@ -1,6 +1,6 @@
 ---
-name: supermap:wiki-search
-description: 搜索 Supermap wiki 查找文档。用于查找公司文档、流程或技术信息。使用方法：/supermap:wiki-search <搜索词>
+name: supermap-wiki-search
+description: 搜索 Supermap wiki 查找文档。用于查找公司文档、流程或技术信息。使用方法：/supermap-wiki-search <搜索词>
 disable-model-invocation: false
 allowed-tools: Bash
 ---
@@ -16,14 +16,14 @@ allowed-tools: Bash
 ### 基本用法
 
 ```bash
-/supermap:wiki-search <搜索词>
+/supermap-wiki-search <搜索词>
 ```
 
 ### 示例
 
-- `/supermap:wiki-search API 文档` - 搜索 API 相关文档
-- `/supermap:wiki-search 部署流程` - 搜索部署流程文档
-- `/supermap:wiki-search 测试指南` - 搜索测试相关指南
+- `/supermap-wiki-search API 文档` - 搜索 API 相关文档
+- `/supermap-wiki-search 部署流程` - 搜索部署流程文档
+- `/supermap-wiki-search 测试指南` - 搜索测试相关指南
 
 ## 工作原理
 

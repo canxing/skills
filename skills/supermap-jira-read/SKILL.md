@@ -1,6 +1,6 @@
 ---
-name: supermap:jira-read
-description: 读取 Supermap Jira 问题的详情。用于获取单个 Jira issue 的完整信息。使用方法：/supermap:jira-read <Jira URL 或 Issue Key>
+name: supermap-jira-read
+description: 读取 Supermap Jira 问题的详情。用于获取单个 Jira issue 的完整信息。使用方法：/supermap-jira-read <Jira URL 或 Issue Key>
 ---
 
 # Supermap Jira Read
@@ -12,7 +12,7 @@ description: 读取 Supermap Jira 问题的详情。用于获取单个 Jira issu
 ### 通过 Claude Skill 调用
 
 ```
-/supermap:jira-read <Jira URL 或 Issue Key>
+/supermap-jira-read <Jira URL 或 Issue Key>
 ```
 
 ### 直接运行脚本

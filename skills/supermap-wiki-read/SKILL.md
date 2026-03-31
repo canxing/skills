@@ -1,6 +1,6 @@
 ---
-name: supermap:wiki-read
-description: 完整阅读 Supermap wiki 页面内容。包括页面文字、图片列表、评论，并递归解析引用的其他 wiki 页面。使用方法：/supermap:wiki-read <wiki URL 或 pageId>
+name: supermap-wiki-read
+description: 完整阅读 Supermap wiki 页面内容。包括页面文字、图片列表、评论，并递归解析引用的其他 wiki 页面。使用方法：/supermap-wiki-read <wiki URL 或 pageId>
 disable-model-invocation: false
 allowed-tools: Bash
 ---
@@ -16,14 +16,14 @@ allowed-tools: Bash
 ### 基本用法
 
 ```bash
-/supermap:wiki-read <wiki URL 或 pageId>
+/supermap-wiki-read <wiki URL 或 pageId>
 ```
 
 ### 示例
 
-- `/supermap:wiki-read https://wiki.ispeco.com/pages/viewpage.action?pageId=210641700` - 读取指定 wiki 页面
-- `/supermap:wiki-read 210641700` - 使用 pageId 直接读取
-- `/supermap:wiki-read https://wiki.ispeco.com/pages/viewpage.action?pageId=210641700 --depth 2` - 限制递归深度为 2 层
+- `/supermap-wiki-read https://wiki.ispeco.com/pages/viewpage.action?pageId=210641700` - 读取指定 wiki 页面
+- `/supermap-wiki-read 210641700` - 使用 pageId 直接读取
+- `/supermap-wiki-read https://wiki.ispeco.com/pages/viewpage.action?pageId=210641700 --depth 2` - 限制递归深度为 2 层
 
 ## 功能特性
 

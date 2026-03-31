@@ -1,4 +1,4 @@
-# supermap:cdci-analysis Skill
+# supermap-cdci-analysis Skill
 
 TeamCity CI/CD 构建分析 Skill，智能诊断构建失败原因并提供解决方案。
 

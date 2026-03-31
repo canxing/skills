@@ -1,6 +1,6 @@
 ---
-name: supermap:search
-description: 统一搜索 Supermap wiki、Jira 和 YouTrack。同时搜索三个系统并整合结果。使用方法：/supermap:search <搜索词>
+name: supermap-search
+description: 统一搜索 Supermap wiki、Jira 和 YouTrack。同时搜索三个系统并整合结果。使用方法：/supermap-search <搜索词>
 disable-model-invocation: false
 allowed-tools: Bash
 ---
@@ -12,12 +12,12 @@ allowed-tools: Bash
 ## 使用方法
 
 ```
-/supermap:supermap-search <搜索关键词>
+/supermap-search <搜索关键词>
 ```
 
 **示例：**
-- `/supermap:supermap-search iManager` - 搜索所有系统中与 iManager 相关的内容
-- `/supermap:supermap-search 部署` - 搜索所有系统中与部署相关的内容
+- `/supermap-search iManager` - 搜索所有系统中与 iManager 相关的内容
+- `/supermap-search 部署` - 搜索所有系统中与部署相关的内容
 
 ## 执行方式
 

@@ -1,6 +1,6 @@
 ---
-name: supermap:youtrack-search
-description: 搜索 Supermap YouTrack 查找问题。用于查找 YouTrack issues、任务或缺陷报告。使用方法：/supermap:youtrack-search <搜索词>
+name: supermap-youtrack-search
+description: 搜索 Supermap YouTrack 查找问题。用于查找 YouTrack issues、任务或缺陷报告。使用方法：/supermap-youtrack-search <搜索词>
 ---
 
 # Supermap YouTrack 搜索技能
@@ -10,14 +10,14 @@ description: 搜索 Supermap YouTrack 查找问题。用于查找 YouTrack issue
 ## 使用方法
 
 ```
-/supermap:youtrack-search <搜索关键词>
+/supermap-youtrack-search <搜索关键词>
 ```
 
 **示例：**
-- `/supermap:youtrack-search test` - 搜索与 test 相关的 issues
-- `/supermap:youtrack-search "bug fix"` - 搜索包含 "bug fix" 的 issues
-- `/supermap:youtrack-search CS-4408` - 搜索特定编号的 issue
-- `/supermap:youtrack-search project: CloudGIS` - 使用 YouTrack 查询语法搜索
+- `/supermap-youtrack-search test` - 搜索与 test 相关的 issues
+- `/supermap-youtrack-search "bug fix"` - 搜索包含 "bug fix" 的 issues
+- `/supermap-youtrack-search CS-4408` - 搜索特定编号的 issue
+- `/supermap-youtrack-search project: CloudGIS` - 使用 YouTrack 查询语法搜索
 
 ## 前置要求
 

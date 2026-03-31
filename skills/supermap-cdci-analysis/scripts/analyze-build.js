@@ -272,8 +272,8 @@ async function analyzeBuild(buildUrl, options = {}) {
             const sonarUrl = buildSonarUrl(sonarInfo);
             if (sonarUrl && options.skillInvoker) {
                 try {
-                    // 调用 supermap:sonar-error-analysis skill
-                    sonarAnalysisResult = await options.skillInvoker('supermap:sonar-error-analysis', sonarUrl);
+                    // 调用 supermap-sonar-error-analysis skill
+                    sonarAnalysisResult = await options.skillInvoker('supermap-sonar-error-analysis', sonarUrl);
                 } catch (sonarError) {
                     // Sonar 分析失败，记录但不影响主流程
                     sonarAnalysisResult = null;

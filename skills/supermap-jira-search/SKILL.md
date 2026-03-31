@@ -1,6 +1,6 @@
 ---
-name: supermap:jira-search
-description: 搜索 Supermap Jira 查找问题。用于查找 Jira issues、bug 报告或任务。使用方法：/supermap:jira-search <搜索词>
+name: supermap-jira-search
+description: 搜索 Supermap Jira 查找问题。用于查找 Jira issues、bug 报告或任务。使用方法：/supermap-jira-search <搜索词>
 ---
 
 # Supermap Jira 搜索技能
@@ -10,13 +10,13 @@ description: 搜索 Supermap Jira 查找问题。用于查找 Jira issues、bug 
 ## 使用方法
 
 ```
-/supermap:jira-search <搜索关键词>
+/supermap-jira-search <搜索关键词>
 ```
 
 **示例：**
-- `/supermap:jira-search iServer` - 搜索与 iServer 相关的 issues
-- `/supermap:jira-search "bug fix"` - 搜索包含 "bug fix" 的 issues
-- `/supermap:jira-search DSG-123` - 搜索特定编号的 issue
+- `/supermap-jira-search iServer` - 搜索与 iServer 相关的 issues
+- `/supermap-jira-search "bug fix"` - 搜索包含 "bug fix" 的 issues
+- `/supermap-jira-search DSG-123` - 搜索特定编号的 issue
 
 ## 前置要求
 
