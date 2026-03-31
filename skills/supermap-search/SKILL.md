@@ -1,6 +1,6 @@
 ---
-name: supermap:supermap-search
-description: 统一搜索 Supermap wiki、Jira 和 YouTrack。同时搜索三个系统并整合结果。使用方法：/supermap:supermap-search <搜索词>
+name: supermap:search
+description: 统一搜索 Supermap wiki、Jira 和 YouTrack。同时搜索三个系统并整合结果。使用方法：/supermap:search <搜索词>
 disable-model-invocation: false
 allowed-tools: Bash
 ---

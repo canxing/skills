@@ -1,6 +1,6 @@
 ---
-name: supermap:wiki-write
-description: 向 Supermap Wiki 写入内容。支持创建新页面或修改现有页面，可指定模板页面保持样式一致。使用方法：/supermap:wiki-write <操作> <参数>
+name: supermap:wiki-writer
+description: 向 Supermap Wiki 写入内容。支持创建新页面或修改现有页面，可指定模板页面保持样式一致。使用方法：/supermap:wiki-writer <操作> <参数>
 disable-model-invocation: false
 allowed-tools: Bash
 ---
@@ -17,13 +17,13 @@ allowed-tools: Bash
 
 ```bash
 # 创建新页面
-/supermap:wiki-write create --space <空间key> --title <标题> --content <内容文件路径> --template <模板pageId>
+/supermap:wiki-writer create --space <空间key> --title <标题> --content <内容文件路径> --template <模板pageId>
 
 # 修改现有页面
-/supermap:wiki-write update --pageId <pageId> --content <内容文件路径> --template <模板pageId>
+/supermap:wiki-writer update --pageId <pageId> --content <内容文件路径> --template <模板pageId>
 
 # 使用模板创建页面（保持样式一致）
-/supermap:wiki-write create --space PDC --title "我的文档" --content ./content.md --template 215849520
+/supermap:wiki-writer create --space PDC --title "我的文档" --content ./content.md --template 215849520
 ```
 
 ### 参数说明
@@ -43,16 +43,16 @@ allowed-tools: Bash
 
 ```bash
 # 创建新页面
-/supermap:wiki-write create --space ~liuxin1 --title "季度总结" --content ./summary.md
+/supermap:wiki-writer create --space ~liuxin1 --title "季度总结" --content ./summary.md
 
 # 使用模板创建页面（保持样式一致）
-/supermap:wiki-write create --space ~liuxin1 --title "季度总结" --content ./summary.md --template 215849520
+/supermap:wiki-writer create --space ~liuxin1 --title "季度总结" --content ./summary.md --template 215849520
 
 # 更新现有页面
-/supermap:wiki-write update --pageId 210659947 --content ./summary.md
+/supermap:wiki-writer update --pageId 210659947 --content ./summary.md
 
 # 使用模板更新页面
-/supermap:wiki-write update --pageId 210659947 --content ./summary.md --template 215849520
+/supermap:wiki-writer update --pageId 210659947 --content ./summary.md --template 215849520
 ```
 
 ## 功能特性

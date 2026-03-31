@@ -1,5 +1,5 @@
 ---
-name: supermap:cdci_analysis
+name: supermap:cdci-analysis
 description: |
   分析 TeamCity CI/CD 构建失败原因并提供解决方案。
 
@@ -177,7 +177,7 @@ const options = {
      - 包含 "quality gate" / "质量门" / "Quality Gate" 关键词
      - 包含 Sonar 项目 key 模式 (com.supermap.cloud:*)
    - 提取 Sonar 项目 key 和 PR 号（如有）
-   - 调用 `supermap:sonar_error_analysis` skill 进行详细分析
+   - 调用 `supermap:sonar-error-analysis` skill 进行详细分析
    - 将 Sonar 分析结果与 CI 分析结果合并输出
 
 5. **判断信息充足性**:

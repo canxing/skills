@@ -1,5 +1,5 @@
 ---
-name: supermap:sonar_error_analysis
+name: supermap:sonar-error-analysis
 description: |
   分析 SonarQube 质量门失败原因并提供改进建议。
 

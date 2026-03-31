@@ -11,15 +11,15 @@
 npx skills add canxing/skills --skill daily-political-news -y
 
 # 安装 Supermap 系列技能（使用 supermap: 前缀）
-npx skills add canxing/skills --skill supermap:cdci_analysis -y
+npx skills add canxing/skills --skill supermap:cdci-analysis -y
 npx skills add canxing/skills --skill supermap:cve-analysis -y
 npx skills add canxing/skills --skill supermap:jira-read -y
 npx skills add canxing/skills --skill supermap:jira-search -y
 npx skills add canxing/skills --skill supermap:search -y
-npx skills add canxing/skills --skill supermap:sonar_error_analysis -y
+npx skills add canxing/skills --skill supermap:sonar-error-analysis -y
 npx skills add canxing/skills --skill supermap:wiki-read -y
 npx skills add canxing/skills --skill supermap:wiki-search -y
-npx skills add canxing/skills --skill supermap:wiki-write -y
+npx skills add canxing/skills --skill supermap:wiki-writer -y
 npx skills add canxing/skills --skill supermap:youtrack-search -y
 npx skills add canxing/skills --skill supermap:youtrack-work-report -y
 
@@ -190,15 +190,15 @@ npx skills add canxing/skills --skill bug-fixing -y
 npx skills add canxing/skills --skill daily-political-news -y
 
 # Supermap 系列技能（使用 supermap: 前缀）
-npx skills add canxing/skills --skill supermap:cdci_analysis -y
+npx skills add canxing/skills --skill supermap:cdci-analysis -y
 npx skills add canxing/skills --skill supermap:cve-analysis -y
 npx skills add canxing/skills --skill supermap:jira-read -y
 npx skills add canxing/skills --skill supermap:jira-search -y
 npx skills add canxing/skills --skill supermap:search -y
-npx skills add canxing/skills --skill supermap:sonar_error_analysis -y
+npx skills add canxing/skills --skill supermap:sonar-error-analysis -y
 npx skills add canxing/skills --skill supermap:wiki-read -y
 npx skills add canxing/skills --skill supermap:wiki-search -y
-npx skills add canxing/skills --skill supermap:wiki-write -y
+npx skills add canxing/skills --skill supermap:wiki-writer -y
 npx skills add canxing/skills --skill supermap:youtrack-search -y
 npx skills add canxing/skills --skill supermap:youtrack-work-report -y
 ```
@@ -210,15 +210,15 @@ npx skills add canxing/skills --skill supermap:youtrack-work-report -y
 npx skills add canxing/skills --skill bug-fixing -y
 
 # Supermap 系列技能（使用 supermap: 前缀）
-npx skills add canxing/skills --skill supermap:cdci_analysis -y
+npx skills add canxing/skills --skill supermap:cdci-analysis -y
 npx skills add canxing/skills --skill supermap:cve-analysis -y
 npx skills add canxing/skills --skill supermap:jira-read -y
 npx skills add canxing/skills --skill supermap:jira-search -y
 npx skills add canxing/skills --skill supermap:search -y
-npx skills add canxing/skills --skill supermap:sonar_error_analysis -y
+npx skills add canxing/skills --skill supermap:sonar-error-analysis -y
 npx skills add canxing/skills --skill supermap:wiki-read -y
 npx skills add canxing/skills --skill supermap:wiki-search -y
-npx skills add canxing/skills --skill supermap:wiki-write -y
+npx skills add canxing/skills --skill supermap:wiki-writer -y
 npx skills add canxing/skills --skill supermap:youtrack-search -y
 npx skills add canxing/skills --skill supermap:youtrack-work-report -y
 ```
