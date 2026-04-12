@@ -1,17 +1,31 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Skill Reminder Hook
 ====================
 当加载 skill 后，在用户每次提问时提醒按照 skill 流程进行。
+
+跨平台支持：Linux 使用 fcntl，Windows 使用 msvcrt
 """
 
 import sys
 import json
 import time
-import msvcrt
 import os
 import traceback
 from pathlib import Path
+
+# 跨平台文件锁
+try:
+    import fcntl  # Linux/Unix/Mac
+    HAS_FCNTL = True
+except ImportError:
+    HAS_FCNTL = False
+
+try:
+    import msvcrt  # Windows only
+    HAS_MSVCRT = True
+except ImportError:
+    HAS_MSVCRT = False
 
 STATE_FILE = "skill-sessions.json"
 REMINDER_TEXT = "***重要***: 请按照已加载的 skill 流程进行"
@@ -30,11 +44,28 @@ def load_session_states():
     for _ in range(10):  # 重试直到成功
         try:
             with open(state_path, "r", encoding="utf-8") as f:
+                # 跨平台文件锁（共享锁）
                 try:
-                    msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)  # 共享锁
+                    if HAS_FCNTL:
+                        fcntl.flock(f.fileno(), fcntl.LOCK_SH)
+                    elif HAS_MSVCRT:
+                        msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
                 except (IOError, OSError):
-                    print(f"Warning: file lock failed: {traceback.format_exc()}", file=sys.stderr)
-                return json.load(f)
+                    # 锁失败时继续，仅打印警告
+                    pass
+
+                data = json.load(f)
+
+                # 解锁
+                try:
+                    if HAS_FCNTL:
+                        fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+                    elif HAS_MSVCRT:
+                        msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+                except:
+                    pass
+
+                return data
         except (json.JSONDecodeError, IOError, OSError):
             time.sleep(0.01)
     return {}
@@ -50,11 +81,15 @@ def save_session_states(states):
         with open(tmp_path, "w", encoding="utf-8") as f:
             json.dump(states, f, ensure_ascii=False, indent=2)
             f.flush()
-            # Windows 文件锁
+            # 跨平台文件锁（排他锁）
             try:
-                msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
+                if HAS_FCNTL:
+                    fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+                elif HAS_MSVCRT:
+                    msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
             except (IOError, OSError):
-                print(f"Warning: file lock failed: {traceback.format_exc()}", file=sys.stderr)
+                # 锁失败时继续
+                pass
         # atomic rename
         tmp_path.replace(state_path)
     except Exception:
