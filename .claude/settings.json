@@ -136,6 +136,17 @@
     ],
     "PreToolUse": [
       {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/check-docs-hook.py",
+            "timeout": 10000,
+            "statusMessage": "CheckDocs"
+          }
+        ]
+      },
+      {
         "hooks": [
           {
             "type": "command",
