@@ -8,6 +8,8 @@
 
 ```bash
 # 安装单个技能（普通技能使用目录名）
+npx skills add canxing/skills --skill bug-fixing -y
+npx skills add canxing/skills --skill ssh-connect -y
 npx skills add canxing/skills --skill daily-political-news -y
 
 # 安装 Supermap 系列技能（使用 supermap- 前缀）
@@ -37,6 +39,7 @@ npx skills list
 | [bug-fixing](./skills/bug-fixing/) | 指导按照特定7步流程修复bug：分析→设计测试→确保UT通过→添加失败UT→修复代码→验证→最终通过 | Bug修复、代码调试 |
 | [quickly-thinking](./skills/quickly-thinking/) | 确认对任务的理解，列出任务拆解 | 任务理解、需求澄清 |
 | [daily-political-news](./skills/daily-political-news/) | 每日定时收集国内外时政新闻，AI翻译并生成要点摘要 | 新闻资讯、信息收集 |
+| [ssh-connect](./skills/ssh-connect/) | SSH 远程连接助手，仅支持密钥免密登录，提供密钥配置、连接命令和远程操作安全警告 | 远程服务器管理、SSH 连接 |
 | [supermap-cdci-analysis](./skills/supermap-cdci-analysis/) | 分析 TeamCity CI/CD 构建失败原因并提供解决方案 | CI/CD 故障排查、构建分析 |
 | [supermap-cve-analysis](./skills/supermap-cve-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
 | [supermap-jira-read](./skills/supermap-jira-read/) | 读取 Supermap Jira 问题的详情，包括描述、附件、评论等 | 问题详情查询 |
@@ -187,6 +190,7 @@ skill-name/
 ```bash
 # 普通技能
 npx skills add canxing/skills --skill bug-fixing -y
+npx skills add canxing/skills --skill ssh-connect -y
 npx skills add canxing/skills --skill daily-political-news -y
 
 # Supermap 系列技能（使用 supermap- 前缀）
@@ -208,6 +212,7 @@ npx skills add canxing/skills --skill supermap-youtrack-work-report -y
 # 这些 Agent 也支持 skills.sh 标准
 # 普通技能
 npx skills add canxing/skills --skill bug-fixing -y
+npx skills add canxing/skills --skill ssh-connect -y
 
 # Supermap 系列技能（使用 supermap- 前缀）
 npx skills add canxing/skills --skill supermap-cdci-analysis -y
