@@ -139,9 +139,9 @@ def play_sound(sound_name):
         return False
 
     # Build the path to the sound folder
-    # Scripts are in .claude/hooks/scripts/, sounds are in .claude/hooks/sounds/
-    script_dir = Path(__file__).parent  # .claude/hooks/scripts/
-    hooks_dir = script_dir.parent  # .claude/hooks/
+    # Scripts are in hooks/scripts/, sounds are in hooks/sounds/
+    script_dir = Path(__file__).parent  # hooks/scripts/
+    hooks_dir = script_dir.parent  # hooks/
 
     # Determine the folder based on the sound name prefix
     # For special sounds like "pretooluse-git-committing", look in "pretooluse" folder

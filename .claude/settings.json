@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py",
+            "command": "python ${CLAUDE_PROJECT_DIR}/hooks/scripts/skill-reminder-hook.py",
             "timeout": 5000
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py",
+            "command": "python ${CLAUDE_PROJECT_DIR}/hooks/scripts/skill-reminder-hook.py",
             "timeout": 5000
           }
         ]
@@ -37,7 +37,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py"
+            "command": "python ${CLAUDE_PROJECT_DIR}/hooks/scripts/skill-reminder-hook.py"
           }
         ]
       }
@@ -47,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py"
+            "command": "python ${CLAUDE_PROJECT_DIR}/hooks/scripts/skill-reminder-hook.py"
           }
         ]
       }
