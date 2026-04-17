@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 Skill Reminder Hook
 ====================
@@ -28,7 +29,7 @@ except ImportError:
     HAS_MSVCRT = False
 
 STATE_FILE = "skill-sessions.json"
-REMINDER_TEXT = "***重要***: 请按照已加载的 skill 流程进行"
+REMINDER_TEXT = "***Important***: Please follow the loaded skill flow and You must output \"I have followed the loaded skill flow\" before replying."
 
 
 def get_state_path():

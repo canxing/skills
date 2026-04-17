@@ -1,370 +1,53 @@
 {
   "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-send 'Claude Code' 'Claude Code needs your attention'"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "Notification"
-          }
-        ]
-      }
-    ],
-    "InstructionsLoaded": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/scripts/skill-reminder-hook.py"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "InstructionsLoaded"
-          },
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "SkillReminder"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
-        "matcher": "Skill",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/scripts/skill-reminder-hook.py"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "PostToolUse"
-          },
           {
             "type": "command",
             "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "SkillReminder"
+            "timeout": 5000
           }
         ]
       }
     ],
     "UserPromptSubmit": [
       {
-        "matcher": "",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/scripts/skill-reminder-hook.py"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000
-          },
           {
             "type": "command",
             "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py",
             "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -Command \"[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms'); [System.Windows.Forms.MessageBox]::Show('Claude Code needs your attention', 'Claude Code')\""
           }
         ]
       }
     ],
     "PostCompact": [
       {
-        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/scripts/skill-reminder-hook.py"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "PostCompact"
-          },
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "SkillReminder"
+            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py"
           }
         ]
       }
     ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/check-docs-hook.py",
-            "timeout": 10000,
-            "statusMessage": "CheckDocs"
-          }
-        ]
-      },
+    "InstructionsLoaded": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "PreToolUse"
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "PermissionRequest"
-          }
-        ]
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "PostToolUseFailure"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "Stop"
-          }
-        ]
-      }
-    ],
-    "SubagentStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "SubagentStart"
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "SubagentStop"
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "once": true,
-            "statusMessage": "PreCompact"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "once": true,
-            "statusMessage": "SessionStart"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "once": true,
-            "statusMessage": "SessionEnd"
-          }
-        ]
-      }
-    ],
-    "Setup": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 30000,
-            "async": true,
-            "statusMessage": "Setup"
-          }
-        ]
-      }
-    ],
-    "TeammateIdle": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "TeammateIdle"
-          }
-        ]
-      }
-    ],
-    "TaskCompleted": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "TaskCompleted"
-          }
-        ]
-      }
-    ],
-    "ConfigChange": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "ConfigChange"
-          }
-        ]
-      }
-    ],
-    "WorktreeCreate": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "WorktreeCreate"
-          }
-        ]
-      }
-    ],
-    "WorktreeRemove": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "WorktreeRemove"
-          }
-        ]
-      }
-    ],
-    "Elicitation": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "Elicitation"
-          }
-        ]
-      }
-    ],
-    "ElicitationResult": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/hooks.py",
-            "timeout": 5000,
-            "async": true,
-            "statusMessage": "ElicitationResult"
+            "command": "python ${CLAUDE_PROJECT_DIR}/.claude/hooks/scripts/skill-reminder-hook.py"
           }
         ]
       }
