@@ -33,9 +33,8 @@ REMINDER_TEXT = "***Important***: Please follow the loaded skill flow and You mu
 
 
 def get_state_path():
-    script_dir = Path(__file__).parent
-    hooks_dir = script_dir.parent
-    return hooks_dir / "state" / STATE_FILE
+    # After migration: scripts are in hooks/scripts/, state stays in .claude/hooks/state/
+    return Path(__file__).parent.parent.parent / ".claude" / "hooks" / "state" / STATE_FILE
 
 
 def load_session_states():

@@ -212,10 +212,8 @@ def is_hook_disabled(event_name):
         True if the hook is disabled, False otherwise
     """
     try:
-        # Scripts are in .claude/hooks/scripts/, config is in .claude/hooks/config/
-        script_dir = Path(__file__).parent  # .claude/hooks/scripts/
-        hooks_dir = script_dir.parent  # .claude/hooks/
-        config_dir = hooks_dir / "config"  # .claude/hooks/config/
+        # Scripts are in hooks/scripts/, config stays in .claude/hooks/config/
+        config_dir = Path(__file__).parent.parent.parent / ".claude" / "hooks" / "config"
 
         local_config_path = config_dir / "hooks-config.local.json"
         default_config_path = config_dir / "hooks-config.json"
@@ -264,10 +262,8 @@ def is_logging_disabled():
         True if logging is disabled, False otherwise
     """
     try:
-        # Scripts are in .claude/hooks/scripts/, config is in .claude/hooks/config/
-        script_dir = Path(__file__).parent  # .claude/hooks/scripts/
-        hooks_dir = script_dir.parent  # .claude/hooks/
-        config_dir = hooks_dir / "config"  # .claude/hooks/config/
+        # Scripts are in hooks/scripts/, config stays in .claude/hooks/config/
+        config_dir = Path(__file__).parent.parent.parent / ".claude" / "hooks" / "config"
 
         local_config_path = config_dir / "hooks-config.local.json"
         default_config_path = config_dir / "hooks-config.json"
@@ -321,7 +317,7 @@ def log_hook_data(hook_data, agent_name=None):
         # Scripts are in .claude/hooks/scripts/, logs are in .claude/hooks/logs/
         script_dir = Path(__file__).parent  # .claude/hooks/scripts/
         hooks_dir = script_dir.parent  # .claude/hooks/
-        logs_dir = hooks_dir / "logs"  # .claude/hooks/logs/
+        logs_dir = Path(__file__).parent.parent.parent / ".claude" / "hooks" / "logs"  # .claude/hooks/logs/
 
         # Ensure logs directory exists
         logs_dir.mkdir(parents=True, exist_ok=True)
