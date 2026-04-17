@@ -212,8 +212,8 @@ def is_hook_disabled(event_name):
         True if the hook is disabled, False otherwise
     """
     try:
-        # Scripts are in hooks/scripts/, config stays in .claude/hooks/config/
-        config_dir = Path(__file__).parent.parent.parent / ".claude" / "hooks" / "config"
+        # Scripts are in hooks/scripts/, config is in hooks/config/
+        config_dir = Path(__file__).parent.parent / "config"
 
         local_config_path = config_dir / "hooks-config.local.json"
         default_config_path = config_dir / "hooks-config.json"
@@ -262,8 +262,8 @@ def is_logging_disabled():
         True if logging is disabled, False otherwise
     """
     try:
-        # Scripts are in hooks/scripts/, config stays in .claude/hooks/config/
-        config_dir = Path(__file__).parent.parent.parent / ".claude" / "hooks" / "config"
+        # Scripts are in hooks/scripts/, config is in hooks/config/
+        config_dir = Path(__file__).parent.parent / "config"
 
         local_config_path = config_dir / "hooks-config.local.json"
         default_config_path = config_dir / "hooks-config.json"
@@ -303,7 +303,7 @@ def is_logging_disabled():
 def log_hook_data(hook_data, agent_name=None):
     """
     Log the full hook_data to hooks-log.jsonl for debugging/auditing.
-    Log file is stored at .claude/hooks/logs/hooks-log.jsonl
+    Log file is stored at hooks/logs/hooks-log.jsonl
 
     Args:
         hook_data: Dictionary containing event information from Claude
@@ -314,10 +314,10 @@ def log_hook_data(hook_data, agent_name=None):
         return
 
     try:
-        # Scripts are in .claude/hooks/scripts/, logs are in .claude/hooks/logs/
-        script_dir = Path(__file__).parent  # .claude/hooks/scripts/
-        hooks_dir = script_dir.parent  # .claude/hooks/
-        logs_dir = Path(__file__).parent.parent.parent / ".claude" / "hooks" / "logs"  # .claude/hooks/logs/
+        # Scripts are in hooks/scripts/, logs are in hooks/logs/
+        script_dir = Path(__file__).parent  # hooks/scripts/
+        hooks_dir = script_dir.parent  # hooks/
+        logs_dir = Path(__file__).parent.parent / "logs"  # hooks/logs/
 
         # Ensure logs directory exists
         logs_dir.mkdir(parents=True, exist_ok=True)
