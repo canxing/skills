@@ -49,7 +49,6 @@ npx skills list
 |---------|------|---------|
 | [daily-political-news](./skills/daily-political-news/) | 每日定时收集国内外时政新闻，AI翻译并生成要点摘要 | 新闻资讯、信息收集 |
 | [ssh-connect](./skills/ssh-connect/) | SSH 远程连接助手，仅支持密钥免密登录，提供密钥配置、连接命令和远程操作安全警告 | 远程服务器管理、SSH 连接 |
-| [idea-planner](./skills/idea-planner/) | 将想法拆解成结构化的执行计划并保存为 Markdown 文档 | 任务规划、项目启动 |
 | [supermap-cdci-analysis](./skills/supermap-cdci-analysis/) | 分析 TeamCity CI/CD 构建失败原因并提供解决方案 | CI/CD 故障排查、构建分析 |
 | [supermap-cve-analysis](./skills/supermap-cve-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
 | [supermap-jira-read](./skills/supermap-jira-read/) | 读取 Supermap Jira 问题的详情，包括描述、附件、评论等 | 问题详情查询 |
