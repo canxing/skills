@@ -1,16 +1,27 @@
-# My Skills
+# Wingman
 
-自制 Agent Skills 集合，支持通过 [skills.sh](https://skills.sh) 安装。
+Claude Code 插件 + Agent Skills 集合。支持通过 [skills.sh](https://skills.sh) 安装独立技能。
 
 ## 快速开始
 
-### 安装技能
+### 安装为 Claude Code 插件（推荐）
 
 ```bash
-# 安装单个技能（普通技能使用目录名）
-npx skills add canxing/skills --skill bug-fixing -y
-npx skills add canxing/skills --skill ssh-connect -y
-npx skills add canxing/skills --skill daily-political-news -y
+# 从 GitHub 安装
+claude plugin install canxing/skills --source github
+
+# 或使用本地路径
+claude --plugin-dir /path/to/skills
+```
+
+### 安装单个技能
+
+```bash
+# 安装 Supermap 系列技能
+npx skills add canxing/skills --skill supermap-cdci-analysis -y
+npx skills add canxing/skills --skill supermap-cve-analysis -y
+# ... 其他 Supermap 技能
+```
 
 # 安装 Supermap 系列技能（使用 supermap- 前缀）
 npx skills add canxing/skills --skill supermap-cdci-analysis -y
@@ -36,10 +47,9 @@ npx skills list
 
 | 技能名称 | 描述 | 适用场景 |
 |---------|------|---------|
-| [bug-fixing](./skills/bug-fixing/) | 指导按照特定7步流程修复bug：分析→设计测试→确保UT通过→添加失败UT→修复代码→验证→最终通过 | Bug修复、代码调试 |
-| [quickly-thinking](./skills/quickly-thinking/) | 确认对任务的理解，列出任务拆解 | 任务理解、需求澄清 |
 | [daily-political-news](./skills/daily-political-news/) | 每日定时收集国内外时政新闻，AI翻译并生成要点摘要 | 新闻资讯、信息收集 |
 | [ssh-connect](./skills/ssh-connect/) | SSH 远程连接助手，仅支持密钥免密登录，提供密钥配置、连接命令和远程操作安全警告 | 远程服务器管理、SSH 连接 |
+| [idea-planner](./skills/idea-planner/) | 将想法拆解成结构化的执行计划并保存为 Markdown 文档 | 任务规划、项目启动 |
 | [supermap-cdci-analysis](./skills/supermap-cdci-analysis/) | 分析 TeamCity CI/CD 构建失败原因并提供解决方案 | CI/CD 故障排查、构建分析 |
 | [supermap-cve-analysis](./skills/supermap-cve-analysis/) | 分析 Java/JavaScript 组件的 CVE 漏洞，判断误报并提供升级建议 | 安全审计、依赖检查 |
 | [supermap-jira-read](./skills/supermap-jira-read/) | 读取 Supermap Jira 问题的详情，包括描述、附件、评论等 | 问题详情查询 |
@@ -186,46 +196,19 @@ skill-name/
 
 ## 安装到不同 Agent
 
-### OpenClaw
-```bash
-# 普通技能
-npx skills add canxing/skills --skill bug-fixing -y
-npx skills add canxing/skills --skill ssh-connect -y
-npx skills add canxing/skills --skill daily-political-news -y
-
-# Supermap 系列技能（使用 supermap- 前缀）
-npx skills add canxing/skills --skill supermap-cdci-analysis -y
-npx skills add canxing/skills --skill supermap-cve-analysis -y
-npx skills add canxing/skills --skill supermap-jira-read -y
-npx skills add canxing/skills --skill supermap-jira-search -y
-npx skills add canxing/skills --skill supermap-search -y
-npx skills add canxing/skills --skill supermap-sonar-error-analysis -y
-npx skills add canxing/skills --skill supermap-wiki-read -y
-npx skills add canxing/skills --skill supermap-wiki-search -y
-npx skills add canxing/skills --skill supermap-wiki-writer -y
-npx skills add canxing/skills --skill supermap-youtrack-search -y
-npx skills add canxing/skills --skill supermap-youtrack-work-report -y
-```
-
 ### Claude Code / Codex / Cursor
 ```bash
-# 这些 Agent 也支持 skills.sh 标准
-# 普通技能
-npx skills add canxing/skills --skill bug-fixing -y
-npx skills add canxing/skills --skill ssh-connect -y
+# 安装为 Claude Code 插件（推荐）
+claude plugin install canxing/skills --source github
 
-# Supermap 系列技能（使用 supermap- 前缀）
+# 或单个安装技能
+npx skills add canxing/skills --skill ssh-connect -y
+npx skills add canxing/skills --skill idea-planner -y
+
+# Supermap 系列技能
 npx skills add canxing/skills --skill supermap-cdci-analysis -y
 npx skills add canxing/skills --skill supermap-cve-analysis -y
-npx skills add canxing/skills --skill supermap-jira-read -y
-npx skills add canxing/skills --skill supermap-jira-search -y
-npx skills add canxing/skills --skill supermap-search -y
-npx skills add canxing/skills --skill supermap-sonar-error-analysis -y
-npx skills add canxing/skills --skill supermap-wiki-read -y
-npx skills add canxing/skills --skill supermap-wiki-search -y
-npx skills add canxing/skills --skill supermap-wiki-writer -y
-npx skills add canxing/skills --skill supermap-youtrack-search -y
-npx skills add canxing/skills --skill supermap-youtrack-work-report -y
+# ... 其他 Supermap 技能
 ```
 
 ## 注意事项
