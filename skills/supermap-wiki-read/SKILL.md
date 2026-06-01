@@ -1,35 +1,18 @@
 ---
 name: supermap-wiki-read
-description: 完整阅读 Supermap wiki 页面内容。包括页面文字、图片列表、评论，并递归解析引用的其他 wiki 页面。使用方法：/supermap-wiki-read <wiki URL 或 pageId>
-disable-model-invocation: false
+description: 完整阅读 Supermap wiki 页面内容。包括页面文字、图片列表、评论，并递归解析引用的其他 wiki 页面
 allowed-tools: Bash
 ---
 
 # Wiki Read Skill
 
-完整阅读 Supermap Confluence wiki 页面内容，包括页面文字、图片列表、评论，并递归解析引用的其他 wiki 页面。
-
-## 使用方法
-
-当用户想要完整阅读 wiki 页面内容时，使用此技能。
-
-### 基本用法
-
-```bash
-/supermap-wiki-read <wiki URL 或 pageId>
-```
-
-### 示例
-
-- `/supermap-wiki-read https://wiki.ispeco.com/pages/viewpage.action?pageId=210641700` - 读取指定 wiki 页面
-- `/supermap-wiki-read 210641700` - 使用 pageId 直接读取
-- `/supermap-wiki-read https://wiki.ispeco.com/pages/viewpage.action?pageId=210641700 --depth 2` - 限制递归深度为 2 层
+完整阅读 Supermap Confluence wiki 页面内容，包括页面文字、图片列表、评论（含回复），并递归解析引用的其他 wiki 页面。
 
 ## 功能特性
 
 1. **页面内容获取**: 获取完整的页面文字内容并转换为 markdown
 2. **图片提取**: 提取页面中实际显示的图片（不包括附件列表中的其他文件）
-3. **评论获取**: 获取页面的所有评论，包括作者和时间
+3. **评论获取**: 获取页面的所有评论（含嵌套回复），树形展示
 4. **递归解析**: 自动解析页面中引用的其他 wiki 页面
 
 ## 工作原理
@@ -37,7 +20,7 @@ allowed-tools: Bash
 1. 从 `SUPERMAP_WIKI_TOKEN` 环境变量读取认证 token
 2. 调用 Confluence REST API 获取页面内容
 3. 解析 HTML 提取图片和 wiki 链接
-4. 获取页面评论
+4. 获取页面评论，递归获取每条评论的回复
 5. 递归处理引用的 wiki 页面（最大深度可配置）
 6. 输出格式化的 markdown 内容
 
@@ -50,7 +33,8 @@ node .claude/skills/supermap-wiki-read/scripts/read_wiki.js "<wiki URL 或 pageI
 ```
 
 可选参数：
-- `-d, --depth`: 递归解析的最大深度（默认 3）
+- `-d, --depth`: 递归解析引用页面的最大深度（默认 3）
+- `--max-comment-depth`: 递归获取评论回复的最大深度（默认无限制）
 - `--no-comments`: 不获取评论
 - `--no-images`: 不提取图片
 
@@ -100,6 +84,13 @@ $env:SUPERMAP_WIKI_TOKEN='your-token-here'
 **时间**: xxx
 **内容**: xxx
 
+└── 回复 — **作者**: yyy
+    **时间**: yyy
+    回复内容...
+    └── 回复 — **作者**: zzz
+        **时间**: zzz
+        深层回复内容...
+
 ---
 
 ## 引用页面
@@ -113,6 +104,7 @@ $env:SUPERMAP_WIKI_TOKEN='your-token-here'
 
 - **页面内容**: `GET /rest/api/content/{pageId}?expand=body.storage,space,version`
 - **评论**: `GET /rest/api/content/{pageId}/child/comment?expand=body.storage,history`
+- **评论回复**: `GET /rest/api/content/{commentId}/child/comment?expand=body.storage,history`
 - **图片下载**: `GET /download/attachments/{pageId}/{filename}`
 
 ## 错误处理

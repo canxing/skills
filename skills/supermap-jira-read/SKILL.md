@@ -1,6 +1,6 @@
 ---
 name: supermap-jira-read
-description: 读取 Supermap Jira 问题的详情。用于获取单个 Jira issue 的完整信息。使用方法：/supermap-jira-read <Jira URL 或 Issue Key>
+description: 读取 Supermap Jira 问题的详情。用于获取单个 Jira issue 的完整信息
 ---
 
 # Supermap Jira Read
@@ -8,12 +8,6 @@ description: 读取 Supermap Jira 问题的详情。用于获取单个 Jira issu
 该技能用于读取 Supermap Jira 系统中单个问题的详细信息。
 
 ## 使用方法
-
-### 通过 Claude Skill 调用
-
-```
-/supermap-jira-read <Jira URL 或 Issue Key>
-```
 
 ### 直接运行脚本
 
@@ -39,7 +33,13 @@ node scripts/read_jira.js "https://jira.supermap.work/browse/ISVJ-11474"
 ## 输出信息
 
 - 基本信息（key、标题、状态、优先级等）
-- 描述
 - 报告人和负责人
 - 组件和版本
+- 描述（标准描述字段）
+- **缺陷详情**（自定义字段：重现步骤、详细描述、测试环境）
 - 附件列表
+
+**注意**：Supermap Jira 使用自定义字段存储缺陷详情：
+- `customfield_10040`: 缺陷重现步骤
+- `customfield_10043`: 缺陷详细信息描述
+- `customfield_10042`: 测试软件环境

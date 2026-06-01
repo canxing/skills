@@ -220,4 +220,4 @@ export YOUTRACK_URL="http://yt.ispeco.com:8099"
 
 ## 相关文件
 
-- `scripts/youtrack_summary.py` - 核心脚本
+- `scripts/youtrack_summary_stdlib.py` - 核心脚本

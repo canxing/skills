@@ -1,59 +1,12 @@
 ---
 name: supermap-wiki-writer
-description: 向 Supermap Wiki 写入内容。支持创建新页面或修改现有页面，可指定模板页面保持样式一致。使用方法：/supermap-wiki-writer <操作> <参数>
-disable-model-invocation: false
+description: 向 Supermap Wiki 写入内容。支持创建新页面或修改现有页面，可指定模板页面保持样式一致
 allowed-tools: Bash
 ---
 
 # Wiki Write Skill
 
 向 Supermap Confluence Wiki 写入内容，支持创建新页面或修改现有页面。可使用现有页面作为模板，自动保持样式一致。
-
-## 使用方法
-
-当用户需要向 wiki 写入内容时使用此技能。
-
-### 基本用法
-
-```bash
-# 创建新页面
-/supermap-wiki-writer create --space <空间key> --title <标题> --content <内容文件路径> --template <模板pageId>
-
-# 修改现有页面
-/supermap-wiki-writer update --pageId <pageId> --content <内容文件路径> --template <模板pageId>
-
-# 使用模板创建页面（保持样式一致）
-/supermap-wiki-writer create --space PDC --title "我的文档" --content ./content.md --template 215849520
-```
-
-### 参数说明
-
-**create 命令（创建新页面）:**
-- `--space`: 空间 key（如 PDC, ~liuxin1）
-- `--title`: 页面标题
-- `--content`: 内容文件路径（markdown 格式）
-- `--template`: （可选）模板页面 pageId，将自动转换内容格式以匹配模板
-
-**update 命令（修改现有页面）:**
-- `--pageId`: 要更新的页面 ID
-- `--content`: 内容文件路径（markdown 格式）
-- `--template`: （可选）模板页面 pageId，将自动转换内容格式以匹配模板
-
-### 示例
-
-```bash
-# 创建新页面
-/supermap-wiki-writer create --space ~liuxin1 --title "季度总结" --content ./summary.md
-
-# 使用模板创建页面（保持样式一致）
-/supermap-wiki-writer create --space ~liuxin1 --title "季度总结" --content ./summary.md --template 215849520
-
-# 更新现有页面
-/supermap-wiki-writer update --pageId 210659947 --content ./summary.md
-
-# 使用模板更新页面
-/supermap-wiki-writer update --pageId 210659947 --content ./summary.md --template 215849520
-```
 
 ## 功能特性
 
@@ -100,6 +53,19 @@ set SUPERMAP_WIKI_TOKEN=your-token-here
 ```powershell
 $env:SUPERMAP_WIKI_TOKEN='your-token-here'
 ```
+
+### 参数说明
+
+**create 命令（创建新页面）:**
+- `--space`: 空间 key（如 PDC, ~liuxin1）
+- `--title`: 页面标题
+- `--content`: 内容文件路径（markdown 格式）
+- `--template`: （可选）模板页面 pageId，将自动转换内容格式以匹配模板
+
+**update 命令（修改现有页面）:**
+- `--pageId`: 要更新的页面 ID
+- `--content`: 内容文件路径（markdown 格式）
+- `--template`: （可选）模板页面 pageId，将自动转换内容格式以匹配模板
 
 ## 输出格式
 

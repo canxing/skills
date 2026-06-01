@@ -189,6 +189,35 @@ function formatOutput(issue) {
         console.log(fields.description);
     }
 
+    // 自定义字段 - 缺陷详情（Supermap Jira使用自定义字段存储）
+    const hasCustomFields = fields.customfield_10040 || fields.customfield_10043 || fields.customfield_10042;
+
+    if (!fields.description && hasCustomFields) {
+        console.log('\n📝 描述');
+        console.log('-'.repeat(40));
+        console.log('(标准描述字段为空，详细信息见下方)');
+    }
+
+    if (hasCustomFields) {
+        console.log('\n📋 缺陷详情');
+        console.log('-'.repeat(40));
+
+        if (fields.customfield_10040) {
+            console.log('\n【重现步骤】');
+            console.log(safeDecodeURIComponent(fields.customfield_10040));
+        }
+
+        if (fields.customfield_10043) {
+            console.log('\n【详细描述】');
+            console.log(safeDecodeURIComponent(fields.customfield_10043));
+        }
+
+        if (fields.customfield_10042) {
+            console.log('\n【测试环境】');
+            console.log(fields.customfield_10042);
+        }
+    }
+
     // 附件
     if (fields.attachment && fields.attachment.length > 0) {
         console.log('\n📎 附件');
@@ -219,6 +248,20 @@ function formatFileSize(bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+/**
+ * 安全解码URI组件
+ * @param {string} str
+ * @returns {string}
+ */
+function safeDecodeURIComponent(str) {
+    if (!str) return str;
+    try {
+        return decodeURIComponent(str);
+    } catch (e) {
+        return str;
+    }
 }
 
 /**

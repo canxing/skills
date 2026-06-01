@@ -15,9 +15,6 @@ description: |
   3. 调用 Sonar API 查询质量门状态
   4. 质量门通过：返回简洁成功信息（含覆盖率、重复率）
   5. 质量门失败：获取具体失败指标、问题列表，分析并提供改进建议
-
-  Requires: curl, SUPERMAP_SONAR_TOKEN environment variable
-  Compatible with Windows, macOS, and Linux.
 ---
 
 # SonarQube 质量门分析 Skill

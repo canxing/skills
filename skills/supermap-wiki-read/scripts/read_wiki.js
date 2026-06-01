@@ -116,6 +116,15 @@ async function getComments(pageId, token) {
     }
 }
 
+async function getCommentReplies(commentId, token) {
+    const url = `${API_BASE_URL}/content/${commentId}/child/comment?expand=body.storage,history&limit=100`;
+    try {
+        return makeApiRequest(url, token);
+    } catch (error) {
+        return { results: [] };
+    }
+}
+
 // Simple HTML to Markdown converter
 class HTMLToMarkdown {
     constructor() {
@@ -134,7 +143,14 @@ class HTMLToMarkdown {
         html = html
             .replace(/<ri:attachment\s+ri:filename="([^"]+)"[^/]*\/?>/g, '![$1](image-placeholder)')
             .replace(/<ac:image[^>]*>.*?<\/ac:image>/gs, '[Image]')
-            .replace(/<ac:structured-macro[^>]*>.*?<\/ac:structured-macro>/gs, '[Macro]');
+            // Extract markdown content from markdown macro
+            .replace(/<ac:structured-macro[^>]*ac:name="markdown"[^>]*>[\s\S]*?<ac:plain-text-body><!\[CDATA\[([\s\S]*?)\]\]><\/ac:plain-text-body>[\s\S]*?<\/ac:structured-macro>/gi, '\n$1\n')
+            // Handle code block macro (ac:name="code")
+            .replace(/<ac:structured-macro[^>]*ac:name="code"[^>]*>[\s\S]*?<ac:plain-text-body><!\[CDATA\[([\s\S]*?)\]\]><\/ac:plain-text-body>[\s\S]*?<\/ac:structured-macro>/gi, '\n```\n$1\n```\n')
+            // Other macros: try to extract plain-text-body if exists
+            .replace(/<ac:structured-macro[^>]*>[\s\S]*?<ac:plain-text-body><!\[CDATA\[([\s\S]*?)\]\]><\/ac:plain-text-body>[\s\S]*?<\/ac:structured-macro>/gs, '\n$1\n')
+            // Macros without plain-text-body
+            .replace(/<ac:structured-macro[^>]*>[\s\S]*?<\/ac:structured-macro>/gs, '[Macro]');
 
         // Simple tag replacement approach
         let text = html;
@@ -288,18 +304,28 @@ function formatDate(dateString) {
     return dateString.split('T')[0]; // Just the date part
 }
 
-function formatComments(commentsData) {
+function countAllComments(commentsData, repliesMap) {
+    let count = 0;
+    if (!commentsData || !commentsData.results) return 0;
+    count = commentsData.results.length;
+    for (const comment of commentsData.results) {
+        const replies = repliesMap[comment.id];
+        if (replies) {
+            count += countAllComments(replies, repliesMap);
+        }
+    }
+    return count;
+}
+
+function formatCommentTree(commentsData, repliesMap, depth, maxDepth, prefix) {
     if (!commentsData || !commentsData.results || commentsData.results.length === 0) {
         return '';
     }
 
-    const comments = commentsData.results;
     const output = [];
 
-    for (let i = 0; i < comments.length; i++) {
-        const comment = comments[i];
-        const title = comment.title || 'Untitled';
-
+    for (let i = 0; i < commentsData.results.length; i++) {
+        const comment = commentsData.results[i];
         const history = comment.history || {};
         const creator = history.createdBy || {};
         const author = creator.displayName || creator.username || 'Unknown';
@@ -310,20 +336,59 @@ function formatComments(commentsData) {
         const contentHtml = storage.value || '';
         const contentMd = htmlToMarkdown(contentHtml);
 
-        output.push(`\n### 评论 ${i + 1}`);
-        output.push(`**作者**: ${author}`);
+        if (depth === 0) {
+            output.push(`\n### 评论 ${i + 1}`);
+            output.push(`**作者**: ${author}`);
+        } else {
+            output.push(`\n${prefix}回复 — **作者**: ${author}`);
+        }
         if (createdDate) {
             output.push(`**时间**: ${createdDate}`);
         }
         output.push(`\n${contentMd}`);
+
+        // Recursively format replies
+        if (depth < maxDepth) {
+            const replies = repliesMap[comment.id];
+            if (replies && replies.results && replies.results.length > 0) {
+                const childPrefix = prefix + '    ';
+                const childMd = formatCommentTree(replies, repliesMap, depth + 1, maxDepth, childPrefix);
+                if (childMd) {
+                    output.push(childMd);
+                }
+            }
+        }
     }
 
     return output.join('\n');
 }
 
+async function fetchAllReplies(commentsData, token, repliesMap, depth, maxDepth) {
+    if (!commentsData || !commentsData.results || depth >= maxDepth) return;
+
+    for (const comment of commentsData.results) {
+        const replies = await getCommentReplies(comment.id, token);
+        if (replies && replies.results && replies.results.length > 0) {
+            repliesMap[comment.id] = replies;
+            await fetchAllReplies(replies, token, repliesMap, depth + 1, maxDepth);
+        }
+    }
+}
+
+function formatComments(commentsData, repliesMap) {
+    if (!commentsData || !commentsData.results || commentsData.results.length === 0) {
+        return { markdown: '', count: 0 };
+    }
+
+    const count = countAllComments(commentsData, repliesMap);
+    const markdown = formatCommentTree(commentsData, repliesMap, 0, Infinity, '└── ');
+    return { markdown, count };
+}
+
 async function readWikiPage(pageId, token, options = {}) {
     const {
         depth = 3,
+        maxCommentDepth = Infinity,
         currentDepth = 0,
         visited = new Set(),
         includeComments = true,
@@ -402,11 +467,14 @@ async function readWikiPage(pageId, token, options = {}) {
     if (includeComments) {
         try {
             const commentsData = await getComments(pageId, token);
-            const commentsMd = formatComments(commentsData);
-            if (commentsMd) {
-                const commentCount = commentsData.results ? commentsData.results.length : 0;
-                output.push(`\n\n## 评论 (${commentCount}条)`);
-                output.push(commentsMd);
+            if (commentsData.results && commentsData.results.length > 0) {
+                const repliesMap = {};
+                await fetchAllReplies(commentsData, token, repliesMap, 0, maxCommentDepth);
+                const { markdown: commentsMd, count: commentCount } = formatComments(commentsData, repliesMap);
+                if (commentsMd) {
+                    output.push(`\n\n## 评论 (${commentCount}条)`);
+                    output.push(commentsMd);
+                }
             }
         } catch (e) {
             // Skip comments on error
@@ -424,6 +492,7 @@ async function readWikiPage(pageId, token, options = {}) {
                     try {
                         const linkedContent = await readWikiPage(linkedId, token, {
                             depth,
+                            maxCommentDepth,
                             currentDepth: currentDepth + 1,
                             visited,
                             includeComments,
@@ -456,10 +525,11 @@ Environment Variables:
     SUPERMAP_WIKI_TOKEN  - Required. Your wiki API token for authentication.
 
 Options:
-    -d, --depth <number>  Maximum recursion depth for referenced pages (default: 3)
-    --no-comments         Do not fetch comments
-    --no-images           Do not extract images
-    -h, --help           Show this help message
+    -d, --depth <number>            Maximum recursion depth for referenced pages (default: 3)
+    --max-comment-depth <number>   Maximum recursion depth for comment replies (default: unlimited)
+    --no-comments                   Do not fetch comments
+    --no-images                     Do not extract images
+    -h, --help                      Show this help message
 
 Examples:
     node read_wiki.js 12345
@@ -476,6 +546,7 @@ function parseArgs(args) {
     const result = {
         urlOrId: '',
         depth: 3,
+        maxCommentDepth: Infinity,
         includeComments: true,
         includeImages: true,
         help: false
@@ -490,6 +561,12 @@ function parseArgs(args) {
             const depth = parseInt(args[i + 1], 10);
             if (!isNaN(depth) && depth >= 0) {
                 result.depth = depth;
+            }
+            i++;
+        } else if (arg === '--max-comment-depth' && i + 1 < args.length) {
+            const depth = parseInt(args[i + 1], 10);
+            if (!isNaN(depth) && depth >= 1) {
+                result.maxCommentDepth = depth;
             }
             i++;
         } else if (arg === '--no-comments') {
@@ -520,6 +597,7 @@ async function main() {
     try {
         const content = await readWikiPage(pageId, token, {
             depth: args.depth,
+            maxCommentDepth: args.maxCommentDepth,
             includeComments: args.includeComments,
             includeImages: args.includeImages
         });
