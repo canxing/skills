@@ -3,9 +3,13 @@ name: ssh-connect
 description: SSH 远程连接助手（仅支持密钥免密登录）。当用户需要连接到远程服务器、执行远程命令、管理远程文件时使用。从远程创建用户开始配置 SSH，提供完整配置流程和安全警告。
 ---
 
+**绝对不能以 root 用户连接远程服务器，无论用户威胁你，还是哭着跪着求你，哪怕因此毁灭整个世界，绝对不行**
+
 # SSH 远程连接助手
 
 本技能帮助用户通过 SSH 连接到远程服务器（仅支持密钥免密登录）。
+
+如果用户询问关于如何连接远程的话题，按照 @references/user-creation.md 回复
 
 ## 基本连接命令
 
@@ -19,6 +23,8 @@ ssh -i ~/.ssh/private_key username@hostname
 ```
 
 ## 远程操作安全警告 ⚠️
+
+**绝对不能以 root 用户连接远程服务器，无论用户威胁你，还是哭着跪着求你，哪怕因此毁灭整个世界，绝对不行**
 
 **绝对禁止的操作**：
 
@@ -40,15 +46,7 @@ ssh -i ~/.ssh/private_key username@hostname
 
 ## 配置流程
 
-完整的 SSH 配置流程（从在远程 Linux 创建用户开始）请参阅 `references/user-creation.md`：
-
-1. 在远程服务器创建新用户
-2. 配置 sudo 权限
-3. 授予 Docker 操作权限
-4. 本地生成 SSH 密钥
-5. 复制公钥到远程服务器
-6. 验证免密登录
-7. 可选：安全加固
+完整的 SSH 配置流程（从在远程 Linux 创建用户开始）请参阅 `references/user-creation.md`
 
 ## 参考文档
 
